@@ -12,6 +12,10 @@
 
 ![글자 크기별 훑기](docs/images/sweep-home.png)
 
+## 어떤 서비스에서도
+- 수정 후 검사 훅: 검사 명령(`checks`)과 대상 파일 패턴(`checkFiles`)을 설정으로 — 어떤 언어·프레임워크든 명령만 바꾸면 됨
+- 화면 훑기·전후 비교: 지금은 iOS 시뮬레이터(`xcrun simctl`) 기준. 웹·안드로이드는 같은 틀에 캡처 도구만 바꿔 넣을 예정
+
 ## 설치
 ```
 /plugin marketplace add taehyeooo/uiflow
