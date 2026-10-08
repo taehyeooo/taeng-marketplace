@@ -1,7 +1,7 @@
 {
   "name": "uiflow",
   "description": "앱 화면 디자인 QA 자동화 — 글자 크기·기기별 화면 훑기, 고친 뒤 자동 검사, 고치기 전·후 비교 이미지, 디자인 QA 체크리스트",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": { "name": "taehyeooo" },
   "repository": "https://github.com/taehyeooo/uiflow",
   "license": "MIT",

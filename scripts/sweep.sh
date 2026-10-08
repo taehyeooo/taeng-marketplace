@@ -28,3 +28,7 @@ done < <(jq -r '.devices[] | [.name, .udid] | @tsv' "$UIFLOW_CONFIG")
 sheet=$(python3 "$DIR/sheet.py" "$OUT/$STAMP-$NAME-sweep.png" "$cols" "${args[@]}")
 log sweep "$NAME $(( ${#args[@]} / 2 ))장"
 echo "훑기 완료($(( ${#args[@]} / 2 ))장 → 한 장): $sheet"
+imgs=$(for ((k=0; k<${#args[@]}; k+=2)); do jq -nc --arg l "${args[k]}" --arg p "${args[k+1]}" '{label:$l, path:$p}'; done | jq -sc .)
+echo "리포트: $(jq -n --arg n "$NAME" --arg sheet "$sheet" --argjson imgs "$imgs" '
+  {plugin:"uiflow", kind:"sweep", title:"화면 훑기 — \($n)", summary:"글자 크기별 \($imgs|length)장 — 잘림·겹침·빈 요소를 확인", env:"iOS 시뮬레이터", status:"ok",
+   sections:[{heading:"한 장으로 보기", images:[{label:"훑기 묶음", path:$sheet}]},{heading:"한 장씩", images:$imgs}]}' | report)"

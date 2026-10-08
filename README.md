@@ -16,6 +16,10 @@
 - 수정 후 검사 훅: 검사 명령(`checks`)과 대상 파일 패턴(`checkFiles`)을 설정으로 — 어떤 언어·프레임워크든 명령만 바꾸면 됨
 - 화면 훑기·전후 비교: 지금은 iOS 시뮬레이터(`xcrun simctl`) 기준. 웹·안드로이드는 같은 틀에 캡처 도구만 바꿔 넣을 예정
 
+## 리포트
+작업이 끝나면 HTML 리포트를 남깁니다: `~/.config/flow-reports/<플러그인>/<시각>-<종류>.html`.
+다섯 flow 플러그인(startflow·devflow·qaflow·uiflow·benchflow)의 리포트가 한 목록 `~/.config/flow-reports/index.html`에 모입니다(최신이 위, 정상/확인 필요/실패 표시).
+
 ## 설치
 ```
 /plugin marketplace add taehyeooo/uiflow

@@ -17,6 +17,7 @@ after)
   [ -f "$B" ] || { echo "먼저 compare.sh before $NAME" >&2; exit 1; }
   A="$OUT/$(date +%m%d-%H%M%S)-$NAME-after.png"; xcrun simctl io "$UDID" screenshot "$A" >/dev/null 2>&1
   sheet=$(python3 "$DIR/sheet.py" "$OUT/$(date +%m%d-%H%M%S)-$NAME-compare.png" 2 "고치기 전" "$B" "고친 뒤" "$A")
-  log compare "$NAME"; echo "비교 이미지: $sheet" ;;
+  log compare "$NAME"; echo "비교 이미지: $sheet"
+  echo "리포트: $(jq -n --arg n "$NAME" --arg s "$sheet" '{plugin:"uiflow", kind:"compare", title:"고치기 전·후 — \($n)", summary:"같은 기기·같은 화면에서 캡처", env:"iOS 시뮬레이터", status:"ok", sections:[{heading:"비교", images:[{label:"고치기 전 / 고친 뒤", path:$s}]}]}' | report)" ;;
 *) sed -n '2,4p' "$0"; exit 1 ;;
 esac

@@ -10,3 +10,6 @@ uiflow_config() {
 cfg() { local f; f=$(uiflow_config); [ -f "$f" ] || { echo "${2:-}"; return; }; local v; v=$(jq -r "$1 // empty" "$f"); echo "${v:-${2:-}}"; }
 expand() { eval echo "$1"; }
 log() { mkdir -p "$HOME/.config/uiflow"; echo "$(date '+%F %T')	$1	${2:-}" >> "$HOME/.config/uiflow/usage.log"; }
+
+# HTML 리포트(모든 flow 플러그인 공용 위치 ~/.config/flow-reports, 목록 index.html)
+report() { local f; f=$(mktemp); cat > "$f"; python3 "$(dirname "${BASH_SOURCE[0]}")/report_html.py" "$f"; rm -f "$f"; }
