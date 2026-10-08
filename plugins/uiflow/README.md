@@ -1,7 +1,7 @@
 # uiflow
 
 앱 화면 **디자인 QA를 반복할 때 손으로 하던 일**을 묶은 Claude Code 플러그인입니다.
-[devflow](https://github.com/taehyeooo/devflow)(배포·QA·기록)와 짝이고, 화면이 있는 프로젝트에만 설치하면 됩니다.
+[devflow](../devflow)(배포·QA·기록)와 짝이고, 화면이 있는 프로젝트에만 설치하면 됩니다.
 
 | 구성 | 종류 | 하는 일 |
 |---|---|---|
@@ -22,8 +22,8 @@
 
 ## 설치
 ```
-/plugin marketplace add taehyeooo/uiflow
-/plugin install uiflow@uiflow
+/plugin marketplace add taehyeooo/taeng-marketplace
+/plugin install uiflow@taeng-marketplace
 ```
 
 ## 설정

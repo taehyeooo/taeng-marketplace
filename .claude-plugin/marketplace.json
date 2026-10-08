@@ -1,0 +1,41 @@
+{
+  "name": "taeng-marketplace",
+  "owner": {
+    "name": "taehyeooo"
+  },
+  "metadata": {
+    "description": "1인 개발에서 매일 반복하던 세팅·배포·QA·디자인 QA·측정을 자동화한 Claude Code 플러그인 모음"
+  },
+  "plugins": [
+    {
+      "name": "startflow",
+      "source": "./plugins/startflow",
+      "description": "새 서비스를 시작할 때 '나만의 기본값'을 한 번에 세팅 — 지침(CLAUDE.md: 비용 0원·검증 먼저·작업 기록·성능 근거·Git 규칙), 시크릿 무시 규칙, .env.example, 기록 문서, devflow·qaflow·uiflow·benchflow 설정 뼈대",
+      "version": "0.2.1"
+    },
+    {
+      "name": "devflow",
+      "source": "./plugins/devflow",
+      "description": "1인 개발에서 매일 반복하던 배포·시뮬레이터 QA·커밋 규칙 확인·작업 기록을 자동화하는 Claude Code 플러그인",
+      "version": "0.5.2"
+    },
+    {
+      "name": "qaflow",
+      "source": "./plugins/qaflow",
+      "description": "기능 QA 자동화 — QA 환경 준비/원복, 시나리오 재생(탭·대기·캡처·시간), 테스트 데이터 자동 정리, API 스모크 테스트, QA 보고서. 서비스마다 설정 파일만 바꿔 쓴다",
+      "version": "0.3.2"
+    },
+    {
+      "name": "uiflow",
+      "source": "./plugins/uiflow",
+      "description": "앱 화면 디자인 QA 자동화 — 글자 크기·기기별 화면 훑기, 고친 뒤 자동 검사, 고치기 전·후 비교 이미지, 디자인 QA 체크리스트",
+      "version": "0.2.1"
+    },
+    {
+      "name": "benchflow",
+      "source": "./plugins/benchflow",
+      "description": "측정·실험 기록 자동화 — 같은 측정을 N번 돌려 중앙값·p90·범위, 실행 환경·커밋과 함께 레포 안 파일로 남기고 고치기 전·후를 비교한다",
+      "version": "0.2.1"
+    }
+  ]
+}

@@ -2,8 +2,16 @@
   "name": "benchflow",
   "description": "측정·실험 기록 자동화 — 같은 측정을 N번 돌려 중앙값·p90·범위, 실행 환경·커밋과 함께 레포 안 파일로 남기고 고치기 전·후를 비교한다",
   "version": "0.2.1",
-  "author": { "name": "taehyeooo" },
-  "repository": "https://github.com/taehyeooo/benchflow",
+  "author": {
+    "name": "taehyeooo"
+  },
+  "repository": "https://github.com/taehyeooo/taeng-marketplace",
   "license": "MIT",
-  "keywords": ["benchmark", "performance", "measurement", "portfolio-evidence"]
+  "keywords": [
+    "benchmark",
+    "performance",
+    "measurement",
+    "portfolio-evidence"
+  ],
+  "homepage": "https://github.com/taehyeooo/taeng-marketplace/tree/main/plugins/benchflow"
 }

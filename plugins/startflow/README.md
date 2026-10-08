@@ -21,8 +21,8 @@ Trova를 만들며 직접 쓴 지침(CLAUDE.md)과 작업 중 정한 규칙들�
 
 ## 설치·사용
 ```
-/plugin marketplace add taehyeooo/startflow
-/plugin install startflow@startflow
+/plugin marketplace add taehyeooo/taeng-marketplace
+/plugin install startflow@taeng-marketplace
 ```
 새 레포에서 "처음 세팅해줘" → 서비스마다 다른 것(소개·스택·먼저 검증할 가정·화면 여부·빌드 명령)만 묻고 나머지는 기본값.
-짝: [devflow](https://github.com/taehyeooo/devflow) · [qaflow](https://github.com/taehyeooo/qaflow) · [uiflow](https://github.com/taehyeooo/uiflow) · [benchflow](https://github.com/taehyeooo/benchflow)
+짝: [devflow](../devflow) · [qaflow](../qaflow) · [uiflow](../uiflow) · [benchflow](../benchflow)

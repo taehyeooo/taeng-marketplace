@@ -2,7 +2,7 @@
 
 성능·비용 수치를 **같은 방식으로 재고, 레포 안에 근거로 남기는** Claude Code 플러그인입니다.
 같은 측정을 N번 돌려 중앙값·p90·최소·최대를 내고, 실행 환경·커밋·이름표(before/after)와 함께 `docs/bench/<이름>.jsonl`·`.md`로 저장합니다.
-짝: [devflow](https://github.com/taehyeooo/devflow) · [qaflow](https://github.com/taehyeooo/qaflow) · [uiflow](https://github.com/taehyeooo/uiflow)
+짝: [devflow](../devflow) · [qaflow](../qaflow) · [uiflow](../uiflow)
 
 ```
 bench.sh run orders-api --label before   # 고치기 전
@@ -20,7 +20,7 @@ bench.sh compare orders-api before after # 중앙값 변화, 환경이 다르면
 
 ## 설치
 ```
-/plugin marketplace add taehyeooo/benchflow
-/plugin install benchflow@benchflow
+/plugin marketplace add taehyeooo/taeng-marketplace
+/plugin install benchflow@taeng-marketplace
 ```
 설정: `~/.config/benchflow/<origin 레포 이름>.json` — 예시 [`examples/config.example.json`](examples/config.example.json). 측정 명령은 한 번 실행에 숫자 하나를 출력하면 됩니다(언어·서비스 무관).

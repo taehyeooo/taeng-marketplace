@@ -18,7 +18,7 @@
 - 배포: 빌드 명령·산출물·서버·헬스 주소·사전 확인·배포 후 확인은 모두 설정. 서버에서 하는 교체·재시작·되돌리기도 `swapCmd`/`restartCmd`/`rollbackCmd`로 바꿀 수 있음(기본: 단일 파일 + systemd)
 - 로컬 서버: 빌드·실행 명령(`startCmd`, 기본 `java -jar {jar}`)·포트·헬스 주소를 설정
 - 커밋 검사: 메시지 형식 정규식·금지 문자열을 설정
-- QA는 [qaflow](https://github.com/taehyeooo/qaflow), 디자인 QA는 [uiflow](https://github.com/taehyeooo/uiflow)로 나뉘어 있습니다(0.3.0에서 qa-sim을 qaflow로 옮김)
+- QA는 [qaflow](../qaflow), 디자인 QA는 [uiflow](../uiflow)로 나뉘어 있습니다(0.3.0에서 qa-sim을 qaflow로 옮김)
 
 ## 리포트
 작업이 끝나면 HTML 리포트를 남깁니다: `~/.config/flow-reports/<플러그인>/<시각>-<종류>.html`.
@@ -26,8 +26,8 @@
 
 ## 설치
 ```
-/plugin marketplace add taehyeooo/devflow
-/plugin install devflow@devflow
+/plugin marketplace add taehyeooo/taeng-marketplace
+/plugin install devflow@taeng-marketplace
 ```
 
 ## 설정

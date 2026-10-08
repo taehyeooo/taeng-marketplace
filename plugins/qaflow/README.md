@@ -2,7 +2,7 @@
 
 기능 QA에서 **매번 손으로 하던 일**을 묶은 Claude Code 플러그인입니다. 서비스마다 다른 것(테이블·API·좌표·명령)은
 모두 설정 파일과 시나리오 파일로 받고, 스크립트에는 특정 서비스 내용을 넣지 않습니다.
-짝: [devflow](https://github.com/taehyeooo/devflow)(개발·배포) · [uiflow](https://github.com/taehyeooo/uiflow)(디자인 QA)
+짝: [devflow](../devflow)(개발·배포) · [uiflow](../uiflow)(디자인 QA)
 
 | 구성 | 하는 일 |
 |---|---|
@@ -25,8 +25,8 @@
 
 ## 설치
 ```
-/plugin marketplace add taehyeooo/qaflow
-/plugin install qaflow@qaflow
+/plugin marketplace add taehyeooo/taeng-marketplace
+/plugin install qaflow@taeng-marketplace
 ```
 설정: `~/.config/qaflow/<origin 레포 이름>.json` (레포 밖). 예시: [`examples/config.example.json`](examples/config.example.json), 시나리오 예시: [`examples/scenarios/`](examples/scenarios)
 

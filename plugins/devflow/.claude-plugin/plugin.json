@@ -2,8 +2,17 @@
   "name": "devflow",
   "description": "1인 개발에서 매일 반복하던 배포·시뮬레이터 QA·커밋 규칙 확인·작업 기록을 자동화하는 Claude Code 플러그인",
   "version": "0.5.2",
-  "author": { "name": "taehyeooo" },
-  "repository": "https://github.com/taehyeooo/devflow",
+  "author": {
+    "name": "taehyeooo"
+  },
+  "repository": "https://github.com/taehyeooo/taeng-marketplace",
   "license": "MIT",
-  "keywords": ["deploy", "qa", "ios-simulator", "git-hooks", "solo-dev"]
+  "keywords": [
+    "deploy",
+    "qa",
+    "ios-simulator",
+    "git-hooks",
+    "solo-dev"
+  ],
+  "homepage": "https://github.com/taehyeooo/taeng-marketplace/tree/main/plugins/devflow"
 }
