@@ -2,7 +2,7 @@
 # 새 서비스 처음 세팅: 답변(JSON)으로 나만의 기본값 파일을 만든다. 이미 있는 파일은 덮어쓰지 않는다
 # (CLAUDE.md가 있으면 CLAUDE.startflow.md로 옆에 만들어 비교하게).
 #   init.sh <답변.json> [--dry-run]
-# 답변: name, summary, stack[], coreRisk, endpoints, codeStyle[], buildCmd, dontExtra[], envKeys[], hasUi, allow[]
+# 답변: name, summary, stack[], coreRisk, endpoints, codeStyle[], buildCmd, dontExtra[], envKeys[], hasUi, allow[], context7(기본 true)
 set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 A=${1:?답변 JSON}; DRY=0; [ "${2:-}" = "--dry-run" ] && DRY=1
@@ -21,6 +21,14 @@ v = {
   "codeStyle": bul(a.get("codeStyle", [])), "buildCmd": a.get("buildCmd", "(빌드·테스트 명령)"),
   "dontExtra": "\n".join(f"- {x}" for x in a.get("dontExtra", [])),
   "envKeys": "\n".join(f"{k}=" for k in a.get("envKeys", [])),
+  "mcpSection": (
+    "레포 `.mcp.json`에 등록한 MCP만 쓴다.\n"
+    "- Context7: 버전에 따라 API가 바뀌는 라이브러리(특히 AI 학습 시점 이후 버전)를 쓸 때, 코드를 쓰기 전에 지금 버전의 문서를 조회한다.\n"
+    "  무료 한도가 월 1,000회(넘으면 과금 없이 차단, 2026-10 기준)라 이미 아는 API나 레포 코드로 확인되는 것에는 쓰지 않는다. 처음 한 번 `/mcp`에서 로그인(OAuth)한다.\n"
+    "- MCP를 새로 넣을 때는 무료 여부를 먼저 확인하고 ADR을 남긴다. 도구 설명이 매 세션 컨텍스트를 차지하므로 실제로 쓰는 것만 둔다."
+    if a.get("context7", True) else
+    "- 아직 없음. MCP를 넣을 때는 무료 여부를 먼저 확인하고 ADR을 남긴다. 도구 설명이 매 세션 컨텍스트를 차지하므로 실제로 쓰는 것만 둔다."
+  ),
 }
 tpl = lambda f: string.Template(open(os.path.join(D, "templates", f)).read()).safe_substitute(v)
 done = []
@@ -39,6 +47,17 @@ write("docs/experience-notes.md", tpl("experience-notes.md"))
 write("docs/adr/README.md", open(os.path.join(D, "templates", "adr-README.md")).read())
 write(".env.example", tpl("env.example"))
 write("docs/bench/.gitkeep", "")
+# .mcp.json: 라이브러리 문서 조회(Context7, OAuth라 키 없음). 이미 있으면 빠진 서버만 더한다.
+if a.get("context7", True):
+    mp = os.path.join(ROOT, ".mcp.json"); want = json.load(open(os.path.join(D, "templates", "mcp.json")))["mcpServers"]
+    cur_m = json.load(open(mp)) if os.path.exists(mp) else {}
+    servers = cur_m.setdefault("mcpServers", {}); added = [k for k in want if k not in servers]
+    if added:
+        servers.update({k: want[k] for k in added})
+        done.append(f"{'(미리보기) ' if DRY else ''}{'더함' if os.path.exists(mp) else '만듦'}: .mcp.json ({', '.join(added)})")
+        if not DRY: open(mp, "w").write(json.dumps(cur_m, ensure_ascii=False, indent=2) + "\n")
+    else:
+        done.append("같음(그대로): .mcp.json")
 # .gitignore: 시크릿 블록이 없을 때만 덧붙임
 gi = os.path.join(ROOT, ".gitignore"); cur = open(gi).read() if os.path.exists(gi) else ""
 if "(startflow)" not in cur:

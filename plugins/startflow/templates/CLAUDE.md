@@ -38,6 +38,10 @@ ${codeStyle}
 - `docs/experience-notes.md` — 작업 하나에서 무엇을 했고 무엇을 확인했나.
 - 이 파일 — 지켜야 할 규칙 요약만. 결정의 배경은 ADR에 두고 링크한다.
 
+## AI 도구(MCP)
+
+${mcpSection}
+
 ## 하지 말 것
 
 - 유료 API를 기본 옵션으로 코드에 하드코딩하지 말 것

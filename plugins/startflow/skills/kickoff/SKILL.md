@@ -1,6 +1,6 @@
 ---
 name: kickoff
-description: 새 서비스(새 레포)를 시작할 때 나만의 기본값을 한 번에 세팅한다 — CLAUDE.md 지침(비용 0원·검증 먼저·작업 방식·Git 규칙·자동화 플러그인), .gitignore 시크릿 블록, .env.example, docs/experience-notes.md, docs/bench, 프로젝트 권한, devflow·qaflow·uiflow·benchflow 설정 뼈대. "새 프로젝트 시작", "처음 세팅해줘", "kickoff"에 쓴다.
+description: 새 서비스(새 레포)를 시작할 때 나만의 기본값을 한 번에 세팅한다 — CLAUDE.md 지침(비용 0원·검증 먼저·작업 방식·Git 규칙·자동화 플러그인), .gitignore 시크릿 블록, .env.example, .mcp.json(Context7), docs/experience-notes.md, docs/bench, 프로젝트 권한, devflow·qaflow·uiflow·benchflow 설정 뼈대. "새 프로젝트 시작", "처음 세팅해줘", "kickoff"에 쓴다.
 ---
 
 # 처음 세팅 (startflow)
@@ -12,6 +12,7 @@ description: 새 서비스(새 레포)를 시작할 때 나만의 기본값을 �
    - 기술 스택(서버·DB·배포·외부 API — 각 외부 서비스의 무료 티어 여부를 함께 확인해 적는다)
    - **가장 먼저 검증할 핵심 가정**(예: "영상 → 장소 추출이 쓸만한 정확도인지")
    - 화면이 있는지(앱/웹) → uiflow 설정 여부
+   - 라이브러리 문서 조회 MCP(Context7)를 넣을지 — 기본은 넣음(무료 월 1,000회, 넘으면 차단·과금 없음, OAuth라 키 없음). 답변 `context7: false`면 뺀다
    - 빌드·테스트 명령, 필요한 환경 변수 이름
    - **핵심 작업 2~4개**(flows, 예: "영상 공유", "여행 만들기") — 첫 페르소나 세트(기본 6 + 확장 6)를 이 작업과 축(경험·데이터 양·기기·맥락)으로 만든다
 3. 답을 JSON으로 저장하고 `bash "${CLAUDE_PLUGIN_ROOT}/scripts/init.sh" <답변.json> --dry-run`으로 무엇이 생기는지 보여 준다.
