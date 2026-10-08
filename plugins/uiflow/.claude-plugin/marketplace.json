@@ -1,0 +1,5 @@
+{
+  "name": "uiflow",
+  "owner": { "name": "taehyeooo" },
+  "plugins": [ { "name": "uiflow", "source": "./", "description": "앱 화면 디자인 QA 자동화" } ]
+}

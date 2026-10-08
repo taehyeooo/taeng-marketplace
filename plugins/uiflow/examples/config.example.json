@@ -1,0 +1,11 @@
+{
+  "devices": [ { "name": "SE", "udid": "00000000-0000-0000-0000-000000000000" } ],
+  "textSizes": ["large", "extra-extra-extra-large", "accessibility-extra-extra-extra-large"],
+  "settleSeconds": 3,
+  "shotDir": "~/.config/uiflow/shots",
+  "checkFiles": "^.*/src/.*\\.(tsx?|jsx?)$",
+  "checks": [
+    { "name": "타입 검사", "cmd": "npx tsc --noEmit" },
+    { "name": "디자인 토큰 검사", "cmd": "npm run -s check:tokens" }
+  ]
+}
