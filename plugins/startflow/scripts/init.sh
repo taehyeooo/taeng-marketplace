@@ -36,6 +36,7 @@ def write(path, text, keep_existing=True):
         os.makedirs(os.path.dirname(full) or ".", exist_ok=True); open(full, "w").write(text)
 write("CLAUDE.md", tpl("CLAUDE.md"))
 write("docs/experience-notes.md", tpl("experience-notes.md"))
+write("docs/adr/README.md", open(os.path.join(D, "templates", "adr-README.md")).read())
 write(".env.example", tpl("env.example"))
 write("docs/bench/.gitkeep", "")
 # .gitignore: 시크릿 블록이 없을 때만 덧붙임

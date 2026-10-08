@@ -9,6 +9,7 @@ Trova를 만들며 직접 쓴 지침(CLAUDE.md)과 작업 중 정한 규칙들�
 | `.gitignore` | 시크릿 블록(.env, 키, 로컬 설정) |
 | `.env.example` | 키 이름만, "실제 값 금지" 머리말 |
 | `docs/experience-notes.md`, `docs/bench/` | 작업 기록·측정 기록 자리 |
+| `docs/adr/README.md` | 결정 기록(ADR) 쓰는 법과 목록 — 문서 역할(ADR·작업 기록·CLAUDE.md) 나누기 |
 | `.claude/settings.json` | 빌드·테스트·git add/commit 등 매번 허용하던 권한 |
 | `~/.config/{devflow,qaflow,uiflow,benchflow}/<레포>.json` | 자동화 플러그인 설정 뼈대(레포 밖) |
 | `~/.claude/CLAUDE.md` | 한국어 답변 규칙(없을 때만) |
