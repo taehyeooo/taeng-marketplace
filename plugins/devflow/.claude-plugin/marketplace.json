@@ -1,0 +1,7 @@
+{
+  "name": "devflow",
+  "owner": { "name": "taehyeooo" },
+  "plugins": [
+    { "name": "devflow", "source": "./", "description": "배포·시뮬레이터 QA·커밋 검사·작업 기록 자동화" }
+  ]
+}
