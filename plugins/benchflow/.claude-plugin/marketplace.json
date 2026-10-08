@@ -1,0 +1,2 @@
+{ "name": "benchflow", "owner": { "name": "taehyeooo" },
+  "plugins": [ { "name": "benchflow", "source": "./", "description": "측정·실험 기록 자동화" } ] }

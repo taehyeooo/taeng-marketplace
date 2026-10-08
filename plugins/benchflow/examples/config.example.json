@@ -1,0 +1,22 @@
+{
+  "resultsDir": "docs/bench",
+  "benchmarks": {
+    "orders-api": {
+      "description": "내 주문 목록 API 응답 시간(로컬 서버, 테스트 계정)",
+      "env": "로컬 서버 + 개발 DB",
+      "cmd": "curl -s -o /dev/null -w '%{time_total}' -H \"Authorization: Bearer $(cat ~/.config/my-app-token)\" http://localhost:8080/api/orders | awk '{printf \"%.1f\", $1*1000}'",
+      "unit": "ms",
+      "runs": 20,
+      "warmup": 2
+    },
+    "ai-extract": {
+      "description": "영상 1개 분석 시간(외부 AI 호출 포함)",
+      "env": "로컬 서버 + 개발 DB",
+      "cmd": "./scripts/measure-extract.sh",
+      "unit": "s",
+      "runs": 3,
+      "warmup": 0,
+      "preCheck": "echo '오늘 외부 AI 사용량을 출력하는 명령'"
+    }
+  }
+}
