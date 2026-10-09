@@ -1,0 +1,24 @@
+{
+  "resultsDir": "docs/eval",
+  "promptfooVersion": "0.123.1",
+  "suites": {
+    "word-extract": {
+      "description": "예시 — 외부 호출 없는 가짜 추출기로 동작 확인",
+      "env": "로컬",
+      "config": "examples/word-extract/promptfooconfig.yaml",
+      "metrics": ["recall", "precision"]
+    },
+    "place-extract": {
+      "description": "영상 자막에서 장소 추출 정확도(AI 호출 포함)",
+      "env": "로컬 + Gemini 무료 티어",
+      "config": "eval/place-extract/promptfooconfig.yaml",
+      "metrics": ["recall", "precision"],
+      "preCheck": "echo '오늘 AI 사용량을 출력하는 명령'",
+      "maxCalls": 10,
+      "callsPerTest": 1,
+      "delayMs": 6000,
+      "maxConcurrency": 1,
+      "envFile": "pipeline-test/.env"
+    }
+  }
+}

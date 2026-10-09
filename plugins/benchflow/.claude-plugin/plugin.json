@@ -1,7 +1,7 @@
 {
   "name": "benchflow",
-  "description": "측정·실험 기록 자동화 — 같은 측정을 N번 돌려 중앙값·p90·범위, 실행 환경·커밋과 함께 레포 안 파일로 남기고 고치기 전·후를 비교한다",
-  "version": "0.2.1",
+  "description": "측정·판정·추천 — 같은 측정을 N번 돌려 레포에 근거로 남기고, 기준값 대비 좋아짐/나빠짐을 판정해 알리며, 코드를 읽고 근거 있는 개선안을 추천한다",
+  "version": "0.3.0",
   "author": {
     "name": "taehyeooo"
   },
@@ -11,7 +11,9 @@
     "benchmark",
     "performance",
     "measurement",
-    "portfolio-evidence"
+    "portfolio-evidence",
+    "regression",
+    "advice"
   ],
   "homepage": "https://github.com/taehyeooo/taeng-marketplace/tree/main/plugins/benchflow"
 }

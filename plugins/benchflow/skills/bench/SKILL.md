@@ -5,7 +5,12 @@ description: 성능·비용 측정을 같은 방식으로 N번 돌려 통계(중
 
 # 측정 (benchflow)
 
-`bash "${CLAUDE_PLUGIN_ROOT}/scripts/bench.sh" list | run <이름> [--label before|after] [--runs N] | compare <이름> [A B]`
+`bash "${CLAUDE_PLUGIN_ROOT}/scripts/bench.sh" list | run <이름> [--label before|after] [--runs N] | compare <이름> [A B] | baseline <이름|--tag 태그> | check [--tag 태그] | collect usage [--since 날짜]`
+
+- `baseline`: 지금 값을 기준값으로 남긴다. `check`: 다시 재서 기준값과 비교 → 좋아짐/나빠짐/변화 없음/비교 불가(설정의 `better`·`tolerance`로 판정), 나빠지면 macOS 알림. 판정 원본은 `<resultsDir>/_check-latest.json`.
+- 나빠졌거나 개선 여지가 큰 지표는 이어서 **advise 스킬**로 코드를 읽고 추천한다(자동 적용 없음).
+- `collect usage`: flow 플러그인 사용 로그를 플러그인·종류별로 센다(AI 도구 사용 지표).
+- 태그 `qa`는 qaflow QA 종료 때, `pr`은 devflow `ship pr` 때 자동으로 `check`된다. `pr` 지표는 **그 브랜치 코드로 재지는 것**(테스트 수·평가 정확도 등)에만 붙인다 — 로컬 서버 응답 시간은 브랜치가 아닌 실행 중인 서버를 잰다.
 
 ## 순서
 1. 측정이 외부 API(예: AI 무료 한도)를 쓰면 `preCheck`로 사용량을 먼저 보고 사용자에게 남은 양을 알린다.

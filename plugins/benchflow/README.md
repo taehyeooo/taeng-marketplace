@@ -8,7 +8,16 @@
 bench.sh run orders-api --label before   # 고치기 전
 bench.sh run orders-api --label after    # 고친 뒤
 bench.sh compare orders-api before after # 중앙값 변화, 환경이 다르면 경고
+bench.sh baseline --tag qa               # 기준값 남기기
+bench.sh check --tag qa                  # 기준값 대비 좋아짐/나빠짐/변화 없음, 나빠지면 알림
 ```
+
+## 판정과 추천 (0.3.0)
+- 지표마다 `better`(lower|higher)·`tolerance`(`"5%"` 또는 절대값)·`tags`·`entry`(코드 진입점 힌트)를 설정에 적는다. `runs: 1`이면 정확도·개수 같은 한 번 재는 값.
+- `check`는 마지막 baseline과 비교해 판정하고 HTML 리포트를 남긴다. 나빠진 지표가 있으면 macOS 알림.
+- **advise 스킬**: 나빠진 지표와 개선 여지가 큰 지표마다 `bench-advisor` 에이전트가 측정 경로 전체·기준 이후 diff·레포 CLAUDE.md/ADR을 읽고 추천한다. 추천마다 근거 수치·읽은 코드(`경로:줄`)·원인·변경안·예상 효과(추정)·검증 방법·위험이 있어야 하고, 없으면 "근거 부족"으로 끝낸다. 결과는 `docs/bench/advice/`, 적용은 사용자가 고른 것만.
+- qaflow QA 종료 때 `qa` 태그, devflow `ship pr` 때 `pr` 태그 지표를 자동 판정(benchflow가 설치돼 있을 때만). PR 본문에 판정 표.
+- `collect usage`: flow 플러그인 사용 로그 집계(AI 도구 사용 지표).
 
 ## 왜
 이력서·회고의 성능 수치는 "어디서, 몇 번, 어떻게 쟀는지"가 없으면 근거가 되지 않습니다.

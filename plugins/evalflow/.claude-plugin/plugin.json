@@ -1,0 +1,17 @@
+{
+  "name": "evalflow",
+  "description": "AI 출력 정확도 회귀 검사 — promptfoo로 정답 대비 채점해 레포에 기록하고, 새로 틀린 케이스를 알리며, 프롬프트·코드를 읽고 근거 있는 개선안을 추천한다",
+  "version": "0.1.0",
+  "author": {
+    "name": "taehyeooo"
+  },
+  "repository": "https://github.com/taehyeooo/taeng-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "llm-eval",
+    "promptfoo",
+    "regression",
+    "portfolio-evidence"
+  ],
+  "homepage": "https://github.com/taehyeooo/taeng-marketplace/tree/main/plugins/evalflow"
+}

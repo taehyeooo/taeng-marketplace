@@ -4,7 +4,7 @@
     "name": "taehyeooo"
   },
   "metadata": {
-    "description": "1인 개발에서 매일 반복하던 세팅·배포·QA·디자인 QA·측정을 자동화한 Claude Code 플러그인 모음"
+    "description": "1인 개발에서 매일 반복하던 세팅·배포·QA·디자인 QA·측정·AI 평가·PR 리뷰를 자동화한 Claude Code 플러그인 모음"
   },
   "plugins": [
     {
@@ -17,13 +17,13 @@
       "name": "devflow",
       "source": "./plugins/devflow",
       "description": "1인 개발에서 매일 반복하던 배포·시뮬레이터 QA·커밋 규칙 확인·작업 기록을 자동화하는 Claude Code 플러그인",
-      "version": "0.5.2"
+      "version": "0.5.3"
     },
     {
       "name": "qaflow",
       "source": "./plugins/qaflow",
       "description": "기능 QA 자동화 — QA 환경 준비/원복, 시나리오 재생(탭·대기·캡처·시간), 테스트 데이터 자동 정리, API 스모크 테스트, QA 보고서. 서비스마다 설정 파일만 바꿔 쓴다",
-      "version": "0.3.2"
+      "version": "0.3.3"
     },
     {
       "name": "uiflow",
@@ -34,8 +34,20 @@
     {
       "name": "benchflow",
       "source": "./plugins/benchflow",
-      "description": "측정·실험 기록 자동화 — 같은 측정을 N번 돌려 중앙값·p90·범위, 실행 환경·커밋과 함께 레포 안 파일로 남기고 고치기 전·후를 비교한다",
-      "version": "0.2.1"
+      "description": "측정·판정·추천 — 같은 측정을 N번 돌려 레포에 근거로 남기고, 기준값 대비 좋아짐/나빠짐을 판정해 알리며, 코드를 읽고 근거 있는 개선안을 추천한다",
+      "version": "0.3.0"
+    },
+    {
+      "name": "evalflow",
+      "source": "./plugins/evalflow",
+      "description": "AI 출력 정확도 회귀 검사 — promptfoo로 정답 대비 채점해 레포에 기록하고, 새로 틀린 케이스를 알리며, 프롬프트·코드를 읽고 근거 있는 개선안을 추천한다",
+      "version": "0.1.0"
+    },
+    {
+      "name": "reviewflow",
+      "source": "./plugins/reviewflow",
+      "description": "PR 다관점 리뷰 — 정확성·테스트·보안/시크릿·프로젝트 규칙(ADR·CLAUDE.md) 네 리뷰어가 동시에 보고, 검증 에이전트가 지적을 코드로 다시 확인해 맞는 것만 심각도 순으로 낸다",
+      "version": "0.1.0"
     }
   ]
 }
