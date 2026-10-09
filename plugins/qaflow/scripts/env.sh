@@ -87,7 +87,8 @@ stop)
       '{at:$at, kind:"qa", seconds:$secs, taps:$taps, patchLeft:$left}' >> "$HOME/.config/qaflow/qa.log"
     rm -f "$STATE/qa-start"; echo "QA 한 번: ${secs}초, 탭 ${taps}번"
   fi
-  log stop "patch-left=$left"; echo "QA 원복 완료 — 남은 패치 ${left}건" ;;
+  log stop "patch-left=$left"; echo "QA 원복 완료 — 남은 패치 ${left}건"
+  bench_check qa ;;
 tap)
   tcmd=$(e tapCmd)
   if [ -n "$tcmd" ]; then t=${tcmd//\{x\}/$2}; t=${t//\{y\}/$3}; bash -c "$t"; else node "$DIR/tap.mjs" "$APP" "$UDID" "$APP_ID" "$2" "$3"; fi

@@ -1,0 +1,22 @@
+description: 예시 — 쉼표로 나뉜 텍스트에서 장소 이름만 뽑기(외부 호출 없음)
+prompts: ["TEXT:{{text}}"]
+providers: ["exec: python3 provider.py"]
+defaultTest:
+  assert:
+    - type: javascript
+      metric: recall
+      value: |
+        const got = JSON.parse(output); const exp = JSON.parse(context.vars.expected);
+        const hit = exp.filter(x => got.includes(x)).length;
+        return { pass: hit === exp.length, score: exp.length ? hit / exp.length : 1, reason: `맞힘 ${hit}/${exp.length}` };
+    - type: javascript
+      metric: precision
+      value: |
+        const got = JSON.parse(output); const exp = JSON.parse(context.vars.expected);
+        const ok = got.filter(x => exp.includes(x)).length;
+        return { pass: ok === got.length, score: got.length ? ok / got.length : 1, reason: `오탐 ${got.length - ok}개` };
+tests:
+  - description: a-기본
+    vars: {text: "경복궁, 서울역, 광장시장", expected: '["경복궁", "광장시장"]'}
+  - description: b-오탐
+    vars: {text: "남산타워, 카페", expected: '["남산타워"]'}

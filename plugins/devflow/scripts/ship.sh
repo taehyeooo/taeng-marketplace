@@ -28,6 +28,16 @@ pr)
   if ls build/test-results/test/*.xml >/dev/null 2>&1; then
     tests="테스트 $(grep -ho '<testcase ' build/test-results/test/*.xml | wc -l | tr -d ' ')개 통과(로컬)"
   fi
+  verdict=$(bench_check pr)  # 'pr' 태그 지표 판정 → PR 본문에, 기록 파일은 이 브랜치에 커밋
+  if [ -n "$verdict" ]; then
+    echo "$verdict"; rdir=$(printf '%s\n' "$verdict" | sed -n 's/^결과 폴더: //p')
+    if [ -n "$rdir" ] && [ -n "$(git status --porcelain -- "$rdir")" ]; then git add -- "$rdir" && git commit -q -m "docs: PR 지표 판정 기록"; fi
+    verdict=$(printf '%s\n' "$verdict" | grep -E '^(좋아짐|나빠짐|변화 없음|비교 불가)' | awk -F'\t' '{print "| "$1" | "$2" | "$3" |"}')
+    [ -n "$verdict" ] && verdict="지표 판정(benchflow, 로컬)
+| 판정 | 지표 | 기준 → 지금 |
+|---|---|---|
+$verdict"
+  fi
   git push -q -u origin "$branch"
   title=$(gh issue view "$issue" --json title -q .title)
   body="$(git log --format='- %s' "origin/$BASE"..HEAD)
@@ -35,6 +45,8 @@ ${2:+
 $2
 }${tests:+
 $tests
+}${verdict:+
+$verdict
 }
 Closes #$issue$(s prFooter)"
   url=$(gh pr create --base "$BASE" --head "$branch" --title "$title" --body "$body")

@@ -21,3 +21,7 @@ sql() { bash -c "$(cfg .db.cmd) \"\$1\"" _ "$1"; }
 report() {  # 페르소나 실행 안에서는 하위 리포트(시나리오·데이터 정리)를 만들지 않는다 — 페르소나 리포트에 모두 담김
   if [ "${QAFLOW_NO_SUBREPORT:-0}" = 1 ]; then cat >/dev/null; echo "(페르소나 리포트에 포함)"; return; fi
   local f; f=$(mktemp); cat > "$f"; python3 "$(dirname "${BASH_SOURCE[0]}")/report_html.py" "$f"; rm -f "$f"; }
+bench_check() {  # benchflow가 설치돼 있고 이 태그 지표가 있으면 판정(없으면 조용히 건너뜀). BENCHFLOW_SH로 경로 지정 가능
+  local sh=${BENCHFLOW_SH:-$(ls -d "$HOME"/.claude/plugins/cache/*/benchflow/*/scripts/bench.sh 2>/dev/null | awk -F/ '{print $(NF-2)"\t"$0}' | sort -V | tail -1 | cut -f2)}
+  [ -n "$sh" ] && [ -f "$sh" ] || return 0
+  bash "$sh" check --tag "$1" --quiet || true; }

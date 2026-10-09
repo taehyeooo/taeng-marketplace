@@ -7,7 +7,13 @@
       "cmd": "curl -s -o /dev/null -w '%{time_total}' -H \"Authorization: Bearer $(cat ~/.config/my-app-token)\" http://localhost:8080/api/orders | awk '{printf \"%.1f\", $1*1000}'",
       "unit": "ms",
       "runs": 20,
-      "warmup": 2
+      "warmup": 2,
+      "better": "lower",
+      "tolerance": "10%",
+      "tags": [
+        "qa"
+      ],
+      "entry": "GET /api/orders"
     },
     "ai-extract": {
       "description": "영상 1개 분석 시간(외부 AI 호출 포함)",
@@ -17,6 +23,19 @@
       "runs": 3,
       "warmup": 0,
       "preCheck": "echo '오늘 외부 AI 사용량을 출력하는 명령'"
+    },
+    "test-count": {
+      "description": "단위 테스트 개수(브랜치 코드 기준)",
+      "env": "로컬 빌드",
+      "cmd": "grep -ho '<testcase ' build/test-results/test/*.xml | wc -l",
+      "unit": "개",
+      "runs": 1,
+      "warmup": 0,
+      "better": "higher",
+      "tolerance": "0",
+      "tags": [
+        "pr"
+      ]
     }
   }
 }

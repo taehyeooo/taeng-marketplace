@@ -22,3 +22,7 @@ expand() { eval echo "$1"; }  # ~ 와 $HOME 펼치기
 log() { mkdir -p "$HOME/.config/devflow"; echo "$(date '+%F %T')	$1	${2:-}" >> "$HOME/.config/devflow/usage.log"; }
 # HTML 리포트: JSON을 받아 ~/.config/flow-reports/에 만들고 경로를 출력(목록 페이지 index.html도 갱신)
 report() { local f; f=$(mktemp); cat > "$f"; python3 "$(dirname "${BASH_SOURCE[0]}")/report_html.py" "$f"; rm -f "$f"; }
+bench_check() {  # benchflow가 설치돼 있고 이 태그 지표가 있으면 판정(없으면 조용히 건너뜀). BENCHFLOW_SH로 경로 지정 가능
+  local sh=${BENCHFLOW_SH:-$(ls -d "$HOME"/.claude/plugins/cache/*/benchflow/*/scripts/bench.sh 2>/dev/null | awk -F/ '{print $(NF-2)"\t"$0}' | sort -V | tail -1 | cut -f2)}
+  [ -n "$sh" ] && [ -f "$sh" ] || return 0
+  bash "$sh" check --tag "$1" --quiet || true; }

@@ -1,7 +1,7 @@
 {
   "name": "devflow",
   "description": "1인 개발에서 매일 반복하던 배포·시뮬레이터 QA·커밋 규칙 확인·작업 기록을 자동화하는 Claude Code 플러그인",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": {
     "name": "taehyeooo"
   },
