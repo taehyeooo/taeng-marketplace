@@ -24,7 +24,7 @@
 "내가 없어도 개발이 돌아가는 레포"를 만드는 뼈대입니다. Claude Code에서:
 
 1. **마켓플레이스 등록**(PC마다 한 번): `/plugin marketplace add taehyeooo/taeng-marketplace`
-2. **설치**: `/plugin install intaeng@taeng-marketplace` → 안내가 나오면 Claude Code를 다시 시작하거나 `/reload-plugins`
+2. **설치**: `/plugin install intaeng@taeng-marketplace` → 명령이 안 보이면 Claude Code를 다시 시작
 3. **새 레포 폴더에서 Claude Code를 켜고** `/intaeng:지식베이스` (`/지식베이스`까지 치면 목록에서 고를 수 있습니다)
    - 프로젝트 이름과 한 줄 소개를 묻습니다.
    - 무엇이 생기는지 미리보기를 보여 주고, 승인하면 깝니다: 규칙만 담은 `CLAUDE.md`, `knowledge-base/`(목차·작업 기록·인계 메모·기본 원칙 ADR 16개), `docs/templates/` 양식, 검사 스크립트·커밋 메시지 훅·PR 검사(GitHub Actions).
