@@ -117,7 +117,7 @@ class InstallTest(unittest.TestCase):
 class CommandTest(unittest.TestCase):
     def test_한글_명령은_commands에_있고_영어_스킬을_부른다(self):  # intaeng-plugin#R-1
         # 스킬 폴더·name이 한글이면 이름이 `-----`로 깨진다(2026-10-28 확인) — 한글은 명령 파일에만
-        for command, skill in (("지식베이스", "knowledge-base"), ("기획", "feature-spec")):
+        for command, skill in (("지식베이스", "knowledge-base"), ("기획", "feature-spec"), ("디자인", "design-flow")):
             with open(os.path.join(PLUGIN, "commands", command + ".md"), encoding="utf-8") as f:
                 self.assertIn("intaeng:" + skill, f.read())
             self.assertTrue(os.path.isfile(os.path.join(PLUGIN, "skills", skill, "SKILL.md")), skill)
@@ -160,6 +160,35 @@ class FeatureSpecTest(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             # 테스트를 아직 안 썼으니 "테스트가 인용하지 않은 요구사항" 경고는 맞다 — plan 인용 경고는 없어야 한다
             self.assertNotIn("plan", result.stdout)
+
+
+class DesignFlowTest(unittest.TestCase):
+    SKILLS = os.path.join(PLUGIN, "skills")
+
+    def read(self, *parts):
+        with open(os.path.join(self.SKILLS, *parts), encoding="utf-8") as f:
+            return f.read()
+
+    def test_네_단계와_원칙이_다_있다(self):  # intaeng-plugin#R-13 intaeng-plugin#R-14
+        text = self.read("design-flow", "SKILL.md")
+        for heading in ("## 1. 구조 시안 3개", "## 2. 세부 시안", "## 3. 적용", "## 4. 고도화"):
+            self.assertIn(heading, text)
+        for rule in ("큰 것 → 작은 것", "아티팩트로 그리지 않는다", "개발 서버에서만", "지식베이스 먼저",
+                     "같이 하기", "맡기기", "3↔4", "스킬 적용 표", "대응한 스킬 규칙", "44×44px"):
+            self.assertIn(rule, text)
+
+    def test_함께_쓰는_스킬이_플러그인에_있다(self):  # intaeng-plugin#R-15
+        text = self.read("design-flow", "SKILL.md")
+        for skill in ("design-review", "ux-writing-ko"):
+            self.assertIn("intaeng:" + skill, text)
+            self.assertIn(f"name: {skill}\n", self.read(skill, "SKILL.md"))
+
+    def test_나란히_보기는_외부_파일_없이_돈다(self):  # intaeng-plugin#R-13
+        html = self.read("design-flow", "compare.html")
+        self.assertIn("${CLAUDE_PLUGIN_ROOT}/skills/design-flow/compare.html", self.read("design-flow", "SKILL.md"))
+        self.assertNotRegex(html, r"<(script|link)[^>]+(src|href)=\"https?://")
+        for part in ("<iframe", "URLSearchParams", 'name="base"', 'name="v"'):
+            self.assertIn(part, html.replace("createElement('iframe')", "<iframe"))
 
 
 class LeakTest(unittest.TestCase):

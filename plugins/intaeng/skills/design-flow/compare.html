@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시안 나란히 보기</title>
+<!-- intaeng /디자인 1·2단계 — 개발 서버의 시안(?ux=·?variant=)을 같은 폭으로 나란히 띄워 눌러 본다.
+     외부 파일 없이 이 한 장으로 돈다. 주소에 값을 넣어 열 수도 있다:
+     compare.html?base=http://localhost:3000/&v=ux=a&v=ux=b&v=ux=c&w=390 -->
+<style>
+  :root { color-scheme: light dark; --bg: #f6f6f7; --surface: #fff; --ink: #1d1d1f; --muted: #5f6368; --line: #d9d9de; --accent: #2f5bea; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #151517; --surface: #1f1f22; --ink: #ededf0; --muted: #a4a4ab; --line: #3a3a40; --accent: #8aa6ff; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.5 system-ui, sans-serif; background: var(--bg); color: var(--ink); word-break: keep-all; }
+  form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; padding: 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
+  label { display: grid; gap: 4px; color: var(--muted); }
+  input, textarea, select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; min-height: 44px; }
+  textarea { width: 220px; height: 88px; }
+  input[name=base] { width: 260px; }
+  button { font: inherit; min-height: 44px; padding: 0 16px; border: 0; border-radius: 6px; background: var(--accent); color: #fff; cursor: pointer; }
+  #grid { display: flex; gap: 16px; padding: 16px; overflow-x: auto; align-items: flex-start; }
+  figure { margin: 0; flex: none; }
+  figcaption { margin-bottom: 6px; font-weight: 600; }
+  iframe { display: block; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  #empty { padding: 16px; color: var(--muted); }
+</style>
+</head>
+<body>
+<form id="f">
+  <label>개발 서버 주소 <input name="base" placeholder="http://localhost:3000/" required></label>
+  <label>시안(한 줄에 하나, 쿼리) <textarea name="v" placeholder="ux=a&#10;ux=b&#10;ux=c"></textarea></label>
+  <label>폭 <select name="w"><option value="390">휴대폰 390</option><option value="768">태블릿 768</option><option value="1280">데스크톱 1280</option></select></label>
+  <label>높이 <input name="h" type="number" value="800" min="300" step="50"></label>
+  <button>나란히 보기</button>
+</form>
+<div id="grid"></div>
+<p id="empty">주소와 시안을 넣고 "나란히 보기"를 눌러 주세요. 칸 안에서 그대로 눌러 볼 수 있어요.</p>
+<script>
+  const form = document.getElementById('f');
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+
+  // 시안 하나의 주소 — base에 쿼리를 붙인다(이미 ?가 있으면 &로)
+  function variantUrl(base, query) {
+    const q = query.replace(/^[?&]/, '');
+    return base + (base.includes('?') ? '&' : '?') + q;
+  }
+
+  function render(base, variants, width, height) {
+    grid.replaceChildren();
+    empty.hidden = variants.length > 0 && !!base;
+    if (empty.hidden === false) return;
+    for (const v of variants) {
+      const fig = document.createElement('figure');
+      const cap = document.createElement('figcaption');
+      cap.textContent = v + ' · ' + width + 'px';
+      const frame = document.createElement('iframe');
+      frame.src = variantUrl(base, v);
+      frame.width = width;
+      frame.height = height;
+      frame.title = '시안 ' + v;
+      fig.append(cap, frame);
+      grid.append(fig);
+    }
+  }
+
+  function fromForm() {
+    const d = new FormData(form);
+    const variants = String(d.get('v')).split('\n').map((s) => s.trim()).filter(Boolean);
+    return [String(d.get('base')).trim(), variants, Number(d.get('w')), Number(d.get('h'))];
+  }
+
+  form.addEventListener('submit', (e) => { e.preventDefault(); render(...fromForm()); });
+
+  // 주소의 값으로 미리 채우기
+  const p = new URLSearchParams(location.search);
+  if (p.get('base')) {
+    form.base.value = p.get('base');
+    form.v.value = p.getAll('v').join('\n');
+    if (p.get('w')) form.w.value = p.get('w');
+    if (p.get('h')) form.h.value = p.get('h');
+    render(...fromForm());
+  }
+</script>
+</body>
+</html>
