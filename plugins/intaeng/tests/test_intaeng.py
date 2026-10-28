@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(PLUGIN, "scripts"))
 import install  # noqa: E402
 
 # 공개 레포라 원본 레포의 개인 기록이 섞이면 안 된다(spec R-3) — 원본 레포·서비스 이름, 사용자 말 인용 표시, 내 PC 경로·메일
-FORBIDDEN = re.compile(r"intaengligence|trova|투두|\btodo\b|solostack|librarian|gimtaeng|사용자 결정|C:\\Users|/c/Users", re.I)
+FORBIDDEN = re.compile(r"intaengligence|trova|투두|\btodo\b|solostack|librarian|gimtaeng|사용자 결정|\borca\b|C:\\Users|/c/Users", re.I)
 
 
 def run(cmd, cwd):
@@ -114,10 +114,15 @@ class InstallTest(unittest.TestCase):
         self.assertIn("## Git 컨벤션", self.read("CLAUDE.intaeng.md"))
 
 
+COMMANDS = (("지식베이스", "knowledge-base"), ("기획", "feature-spec"), ("디자인", "design-flow"),
+            ("시작", "start-task"), ("마무리", "wrap-up"), ("이어하기", "resume"), ("머지", "merge-train"),
+            ("맡기기", "delegate-pr"), ("스펙점검", "spec-check"))
+
+
 class CommandTest(unittest.TestCase):
     def test_한글_명령은_commands에_있고_영어_스킬을_부른다(self):  # intaeng-plugin#R-1
         # 스킬 폴더·name이 한글이면 이름이 `-----`로 깨진다(2026-10-28 확인) — 한글은 명령 파일에만
-        for command, skill in (("지식베이스", "knowledge-base"), ("기획", "feature-spec"), ("디자인", "design-flow")):
+        for command, skill in COMMANDS:
             with open(os.path.join(PLUGIN, "commands", command + ".md"), encoding="utf-8") as f:
                 self.assertIn("intaeng:" + skill, f.read())
             self.assertTrue(os.path.isfile(os.path.join(PLUGIN, "skills", skill, "SKILL.md")), skill)
@@ -189,6 +194,27 @@ class DesignFlowTest(unittest.TestCase):
         self.assertNotRegex(html, r"<(script|link)[^>]+(src|href)=\"https?://")
         for part in ("<iframe", "URLSearchParams", 'name="base"', 'name="v"'):
             self.assertIn(part, html.replace("createElement('iframe')", "<iframe"))
+
+
+class FlowTest(unittest.TestCase):
+    def read(self, skill):
+        with open(os.path.join(PLUGIN, "skills", skill, "SKILL.md"), encoding="utf-8") as f:
+            return f.read()
+
+    def test_흐름_스킬이_규칙을_지킨다(self):  # intaeng-plugin#R-16
+        for skill in ("start-task", "wrap-up", "resume", "merge-train", "delegate-pr", "spec-check"):
+            self.assertIn(f"name: {skill}\n", self.read(skill))
+        self.assertIn("intaeng:feature-spec", self.read("start-task"))  # 새 기능 기획은 /기획으로
+        self.assertIn("--no-verify", self.read("merge-train"))  # 금지 문구
+        self.assertIn("scripts/cleanup_worktree.py", self.read("merge-train"))
+        for skill in ("wrap-up", "delegate-pr"):
+            self.assertRegex(self.read(skill), r"서명|트레일러")
+
+    def test_스킬끼리_부르는_이름이_다_있다(self):
+        names = set(os.listdir(os.path.join(PLUGIN, "skills")))
+        for skill in names:
+            for ref in re.findall(r"intaeng:([a-z0-9-]+)", self.read(skill)):
+                self.assertIn(ref, names, f"{skill}이 없는 스킬 intaeng:{ref}를 부른다")
 
 
 class LeakTest(unittest.TestCase):
