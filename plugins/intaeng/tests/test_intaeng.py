@@ -117,10 +117,49 @@ class InstallTest(unittest.TestCase):
 class CommandTest(unittest.TestCase):
     def test_한글_명령은_commands에_있고_영어_스킬을_부른다(self):  # intaeng-plugin#R-1
         # 스킬 폴더·name이 한글이면 이름이 `-----`로 깨진다(2026-10-28 확인) — 한글은 명령 파일에만
-        with open(os.path.join(PLUGIN, "commands", "지식베이스.md"), encoding="utf-8") as f:
-            self.assertIn("intaeng:knowledge-base", f.read())
+        for command, skill in (("지식베이스", "knowledge-base"), ("기획", "feature-spec")):
+            with open(os.path.join(PLUGIN, "commands", command + ".md"), encoding="utf-8") as f:
+                self.assertIn("intaeng:" + skill, f.read())
+            self.assertTrue(os.path.isfile(os.path.join(PLUGIN, "skills", skill, "SKILL.md")), skill)
         for name in os.listdir(os.path.join(PLUGIN, "skills")):
             self.assertRegex(name, r"^[a-z0-9-]+$")
+
+
+class FeatureSpecTest(unittest.TestCase):
+    SKILL = os.path.join(PLUGIN, "skills", "feature-spec")
+
+    def read(self, name):
+        with open(os.path.join(self.SKILL, name), encoding="utf-8") as f:
+            return f.read()
+
+    def test_단계와_원칙이_다_있다(self):  # intaeng-plugin#R-10 intaeng-plugin#R-11 intaeng-plugin#R-17 intaeng-plugin#R-18
+        text = self.read("SKILL.md")
+        for heading in ("### 0. 아이디어 받기", "### 1. PRD 초안", "### 2. 기능 트리", "### 3. 기능별 상세",
+                        "### 4. 데이터 모델", "### 5. 자체 점검", "### 6. 확정 → spec", "### 7. plan"):
+            self.assertIn(heading, text)
+        for rule in ("지식베이스 먼저", "객관식", "최대 4개", "(추천)", "추가 제안", "결정 사항",
+                     "같이 하기", "맡기기", "가정 n", "완료 기준", "사람 손이 필요한 일", "확인 방법"):
+            self.assertIn(rule, text)
+
+    def test_채운_명세서와_plan이_깐_레포의_문서_검사를_통과한다(self):  # intaeng-plugin#R-12 intaeng-plugin#R-20
+        with tempfile.TemporaryDirectory() as repo:
+            run(["git", "init", "-q"], repo)
+            with redirect_stdout(io.StringIO()):
+                install.install(repo, hooks=False)
+            spec = self.read("template.md").replace("<앱 이름>", "메모").replace(
+                "- **R-1** 1.1 <세부 기능명> — <한 줄>", "- **R-1** 1.1 메모 쓰기 — 메모를 쓴다\n- **R-2** 1.2 메모 지우기 — 메모를 지운다")
+            with open(os.path.join(repo, "docs/specs/2026-10-28-memo.md"), "w", encoding="utf-8") as f:
+                f.write(spec)
+            with open(os.path.join(repo, "docs/templates/plan.md"), encoding="utf-8") as f:
+                self.assertIn("based_on", f.read())
+            plan = ("---\ntitle: 메모 구현 순서\nversion: 1\nstatus: active\n"
+                    "based_on: docs/specs/2026-10-28-memo.md v1\n---\n\n# 메모\n\n1. [ ] 쓰기 (R-1)\n2. [ ] 지우기 (R-2)\n")
+            with open(os.path.join(repo, "docs/plans/2026-10-28-memo.md"), "w", encoding="utf-8") as f:
+                f.write(plan)
+            result = run([sys.executable, "scripts/check_docs.py"], repo)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            # 테스트를 아직 안 썼으니 "테스트가 인용하지 않은 요구사항" 경고는 맞다 — plan 인용 경고는 없어야 한다
+            self.assertNotIn("plan", result.stdout)
 
 
 class LeakTest(unittest.TestCase):
