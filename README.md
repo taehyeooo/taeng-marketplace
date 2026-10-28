@@ -30,7 +30,7 @@
    - 무엇이 생기는지 미리보기를 보여 주고, 승인하면 깝니다: 규칙만 담은 `CLAUDE.md`, `knowledge-base/`(목차·작업 기록·인계 메모·기본 원칙 ADR 16개), `docs/templates/` 양식, 검사 스크립트·커밋 메시지 훅·PR 검사(GitHub Actions).
    - 이미 있는 파일은 덮어쓰지 않고 옆에 `*.intaeng.*`로 만듭니다.
 4. **첫 커밋**: `chore: 지식베이스 뼈대` — 이제부터 커밋 메시지 규칙(`타입: 내용`, AI 서명 금지)을 훅이 검사합니다.
-5. **그다음**: `knowledge-base/now.md`의 "다음 할 일"부터. 기획은 `/intaeng:기획`(아이디어 → 기능명세서 → 구현 순서), 화면은 `/intaeng:디자인`.
+5. **그다음**: `knowledge-base/now.md`의 "다음 할 일"부터. 일 하나는 `/intaeng:시작` → (기획·디자인) → 구현 → `/intaeng:마무리` → `/intaeng:머지`, 새 세션은 `/intaeng:이어하기`. 기획은 `/intaeng:기획`(아이디어 → 기능명세서 → 구현 순서), 화면은 `/intaeng:디자인`.
 
 - 업데이트: `/plugin marketplace update taeng-marketplace` → 스킬·명령이 새 버전으로 바뀝니다. 이미 깐 파일(CLAUDE.md 등)은 그 레포 것이라 바뀌지 않습니다.
 - 지우기: `/plugin uninstall intaeng@taeng-marketplace` (깐 파일은 그대로 남습니다).
