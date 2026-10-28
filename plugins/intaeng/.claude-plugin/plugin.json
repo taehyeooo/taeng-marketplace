@@ -1,0 +1,17 @@
+{
+  "name": "intaeng",
+  "description": "내가 없어도 개발이 돌아가는 레포 — /지식베이스로 일하는 방식의 뼈대(규칙만 담은 CLAUDE.md·지식베이스 구조·기본 원칙 ADR·양식·검사 스크립트·커밋 훅·CI)를 깐다. /기획(기능명세서)·/디자인·작업 흐름은 이어서 더한다",
+  "version": "0.1.0",
+  "author": {
+    "name": "taehyeooo"
+  },
+  "repository": "https://github.com/taehyeooo/taeng-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "knowledge-base",
+    "adr",
+    "conventions",
+    "project-setup"
+  ],
+  "homepage": "https://github.com/taehyeooo/taeng-marketplace/tree/main/plugins/intaeng"
+}

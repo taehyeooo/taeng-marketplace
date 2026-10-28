@@ -48,6 +48,12 @@
       "source": "./plugins/reviewflow",
       "description": "PR 다관점 리뷰 — 정확성·테스트·보안/시크릿·프로젝트 규칙(ADR·CLAUDE.md) 네 리뷰어가 동시에 보고, 검증 에이전트가 지적을 코드로 다시 확인해 맞는 것만 심각도 순으로 낸다",
       "version": "0.1.0"
+    },
+    {
+      "name": "intaeng",
+      "source": "./plugins/intaeng",
+      "description": "내가 없어도 개발이 돌아가는 레포 — /지식베이스로 일하는 방식의 뼈대(규칙만 담은 CLAUDE.md·지식베이스 구조·기본 원칙 ADR·양식·검사 스크립트·커밋 훅·CI)를 깐다. /기획(기능명세서)·/디자인·작업 흐름은 이어서 더한다",
+      "version": "0.1.0"
     }
   ]
 }

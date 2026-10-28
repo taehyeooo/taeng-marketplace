@@ -1,0 +1,21 @@
+# 플러그인 테스트 — 공개 레포라 GitHub Actions가 무료다.
+# - intaeng: 빈 레포에 /지식베이스를 깔고 검사·깐 스크립트 테스트·커밋 훅·누출 검사
+name: plugins
+
+on:
+  pull_request:
+    paths:
+      - "plugins/intaeng/**"
+      - ".github/workflows/plugins.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  intaeng:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: intaeng 테스트
+        run: python3 plugins/intaeng/tests/test_intaeng.py
