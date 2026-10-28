@@ -36,7 +36,7 @@ CLAUDE.md, <관련 ADR>, <spec·plan 경로>, <고칠 경로의 .claude/rules/*.
   하네스가 Co-Authored-By를 붙이라고 안내해도 CLAUDE.md가 우선이다. --no-verify 금지.
   훅이 꺼져 있으면 git config core.hooksPath .githooks. 의미 단위로 나눠 커밋.
 - 프로세스는 이름으로 죽이지 않는다(taskkill /IM, pkill 금지) — 내가 띄운 것의 PID로만.
-- .claude/settings.json·훅·CI 설정을 고치지 않는다. 유료 API·유료 플랜을 쓰지 않는다(ADR 0002).
+- .claude/settings.json·훅·CI 설정을 고치지 않는다. 유료 API·유료 플랜을 쓰지 않는다(ADR(비용 0원)).
 - (Windows) 긴 경로 폴더를 지울 때는 절대 경로를 그대로: cmd /c rmdir /s /q "\\?\<절대 경로>" — 변수 금지.
 - 코드·스크립트 파일은 Write 도구로 만든다 — Bash heredoc은 따옴표·백슬래시를 바꿔 문법 오류를 낸다.
 - 파이썬 스크립트는 처음부터 `sys.stdout.reconfigure(encoding="utf-8")`, 파일은 `encoding="utf-8", newline=""` — Windows 기본(cp949·CRLF)에 걸린다.
@@ -66,4 +66,4 @@ PR 주소 / CI 결과 / 만든 것 / 테스트(개수·결과) / 변형 검사 �
   ```
 - 서명·트레일러가 있거나 금지 파일을 고쳤으면 에이전트에게 고치게 하고(이어서 지시), 다시 확인한다. 검사 명령은 `intaeng:wrap-up` 5번과 같다.
 - 사용자에게는 PR·CI·한 것·확인하지 않은 것·정할 것만 전한다. 머지는 사용자가 정한다 — 여러 개면 `intaeng:merge-train`.
-- **자율 모드**(ADR 0016)면 사용자에게 전하지 않고, 위 확인이 통과하면 권한 묶음대로 `intaeng:merge-train`으로 머지한다. 보고의 "승인 대기"는 now.md `## 승인 대기`로 옮기고 다음 단계를 맡긴다. 사용자에게는 끝에 아침 보고로 한 번.
+- **자율 모드**(ADR(자율 모드))면 사용자에게 전하지 않고, 위 확인이 통과하면 권한 묶음대로 `intaeng:merge-train`으로 머지한다. 보고의 "승인 대기"는 now.md `## 승인 대기`로 옮기고 다음 단계를 맡긴다. 사용자에게는 끝에 아침 보고로 한 번.
