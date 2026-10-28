@@ -19,6 +19,23 @@
 
 필요한 것만 골라 설치해도 됩니다. 업데이트는 `/plugin marketplace update taeng-marketplace`.
 
+### intaeng으로 새 레포 시작하기
+
+"내가 없어도 개발이 돌아가는 레포"를 만드는 뼈대입니다. Claude Code에서:
+
+1. **마켓플레이스 등록**(PC마다 한 번): `/plugin marketplace add taehyeooo/taeng-marketplace`
+2. **설치**: `/plugin install intaeng@taeng-marketplace` → 안내가 나오면 Claude Code를 다시 시작하거나 `/reload-plugins`
+3. **새 레포 폴더에서 Claude Code를 켜고** `/intaeng:지식베이스` (`/지식베이스`까지 치면 목록에서 고를 수 있습니다)
+   - 프로젝트 이름과 한 줄 소개를 묻습니다.
+   - 무엇이 생기는지 미리보기를 보여 주고, 승인하면 깝니다: 규칙만 담은 `CLAUDE.md`, `knowledge-base/`(목차·작업 기록·인계 메모·기본 원칙 ADR 16개), `docs/templates/` 양식, 검사 스크립트·커밋 메시지 훅·PR 검사(GitHub Actions).
+   - 이미 있는 파일은 덮어쓰지 않고 옆에 `*.intaeng.*`로 만듭니다.
+4. **첫 커밋**: `chore: 지식베이스 뼈대` — 이제부터 커밋 메시지 규칙(`타입: 내용`, AI 서명 금지)을 훅이 검사합니다.
+5. **그다음**: `knowledge-base/now.md`의 "다음 할 일"부터. 기획은 `/intaeng:기획`, 화면은 `/intaeng:디자인`(준비 중).
+
+- 업데이트: `/plugin marketplace update taeng-marketplace` → 스킬·명령이 새 버전으로 바뀝니다. 이미 깐 파일(CLAUDE.md 등)은 그 레포 것이라 바뀌지 않습니다.
+- 지우기: `/plugin uninstall intaeng@taeng-marketplace` (깐 파일은 그대로 남습니다).
+- 자세히: [plugins/intaeng](plugins/intaeng/README.md)
+
 ## 플러그인
 
 | 플러그인 | 하는 일 | 언제 쓰나 |
