@@ -5,7 +5,7 @@ description: 새 세션에서 하던 일을 이어받을 때 쓴다 — "하던 
 
 # 하던 일 이어받기
 
-인계 메모는 `knowledge-base/now.md`다(ADR 0015). 메모는 사람이 마지막에 고친 시점의 상태라서, **실제와 맞춰 본 뒤에** 요약한다. 이 스킬은 아무것도 바꾸지 않는다 — 고칠 것은 묻고, 답을 받은 뒤 고친다.
+인계 메모는 `knowledge-base/now.md`다(ADR(now.md 인계)). 메모는 사람이 마지막에 고친 시점의 상태라서, **실제와 맞춰 본 뒤에** 요약한다. 이 스킬은 아무것도 바꾸지 않는다 — 고칠 것은 묻고, 답을 받은 뒤 고친다.
 
 ## 1. 모으기 (읽기만, 레포 안 아무 워크트리에서)
 ```bash
@@ -19,7 +19,7 @@ gh issue list --state open --json number,title
 git log origin/main --oneline -5          # 최근 머지
 ```
 - 그리고 `knowledge-base/now.md` 전체, `knowledge-base/log.md` 마지막 항목 하나.
-- **자율 모드 작업**(now.md 진행 중 줄에 `자율 모드 — 권한: <spec 경로>`)이면 그 spec의 `## 자율 모드 권한`과 now.md `## 승인 대기`, 실험 기록의 "단계별 진행"을 읽는다(ADR 0016).
+- **자율 모드 작업**(now.md 진행 중 줄에 `자율 모드 — 권한: <spec 경로>`)이면 그 spec의 `## 자율 모드 권한`과 now.md `## 승인 대기`, 실험 기록의 "단계별 진행"을 읽는다(ADR(자율 모드)).
 - **남은 브랜치는 PR 상태로 판단한다.** squash 머지라 `git branch -r --no-merged origin/main`은 머지된 브랜치도 "안 머지됨"으로 보인다. 브랜치마다 `gh pr list --state all --head <브랜치> --json number,state`로 MERGED / OPEN / CLOSED / PR 없음을 본다. PR 없는 원격 브랜치·워크트리만 "주인 없는 일"이다.
 - 다른 워크트리에서 일하던 대화는 그 폴더에서 `claude --continue`(마지막 대화) 또는 `claude --resume`(목록에서 고르기)로 이어 간다. 대화 기록은 **폴더마다 따로** 저장된다 — 워크트리 폴더가 다르면 목록에 나오지 않으니, 어느 폴더에서 열지 알려 준다.
 

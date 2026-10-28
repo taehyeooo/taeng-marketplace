@@ -8,16 +8,16 @@ description: 작업을 마치고 PR을 올리기 전에 쓴다 — "마무리해
 기록 위치와 Git 규칙은 `CLAUDE.md` "기록 위치"·"Git 컨벤션". 이 순서대로 하고, 하나라도 실패하면 고친 뒤 다음으로 간다.
 
 ## 1. 기록
-- **log.md**: `knowledge-base/log.md` 맨 끝에 **한 항목만 추가**한다. 형식은 파일 맨 위(`## YYYY-MM-DD <작업 한 줄> (#이슈, PR #번호)` + 한 것 / 확인한 것 / 확인하지 않은 것 / 남긴 지식). PR 번호를 아직 모르면 `(#이슈)`만. **기존 줄은 한 글자도 고치지 않는다** — 틀린 것은 새 항목으로 정정(ADR 0010, CI 실패).
+- **log.md**: `knowledge-base/log.md` 맨 끝에 **한 항목만 추가**한다. 형식은 파일 맨 위(`## YYYY-MM-DD <작업 한 줄> (#이슈, PR #번호)` + 한 것 / 확인한 것 / 확인하지 않은 것 / 남긴 지식). PR 번호를 아직 모르면 `(#이슈)`만. **기존 줄은 한 글자도 고치지 않는다** — 틀린 것은 새 항목으로 정정(ADR(기록 검사), CI 실패).
   - **칸마다 한두 문장**(새 줄이 300자를 넘으면 `check_log.py`가 경고). "확인한 것"은 핵심 결과만(예: "테스트 72개·변형 13/13 통과, 문서 검사 통과"), 실행한 명령·개수·변형 시험·스크린숏 같은 자세한 내용은 **PR 본문**에. "확인하지 않은 것"은 안 돌린 것을 그대로. 파일 맨 위 형식 설명은 고치지 않는다(기존 줄).
-- **now.md**: 고쳐 쓴다(ADR 0015) — **이 PR이 머지된 뒤의 상태로** 쓴다: 이 작업은 "진행 중·머지 대기"로 적지 않고 끝난 것으로 다루며, 남는 것(사람이 할 일·다음 할 일·답이 필요한 것)만 적는다. 끝난 일은 지우고, 다른 작업 항목은 그대로 두고, "마지막 갱신" 날짜. now.md는 main에 들어가야 읽히므로 머지 전 상태로 쓰면 읽힐 때 이미 틀리다.
-- **남길 지식**: 방향·정책을 정했나 → ADR(+ `decisions/README.md` 목록, 새 ADR은 `## 확인 방법` 칸), 원인을 찾았나 → `troubleshooting/`(+ 그 README 목록), 개념을 새로 이해했나 → `concepts/`. **이 작업 중 질문에 답하며 다시 쓸 설명(흐름·현황·비교)을 정리했나** → `concepts/`에 저장하거나 있는 문서를 고친다(이미 README·가이드에 있으면 링크만, ADR 0001). 새 문서는 `index.md`나 폴더 README에 한 줄(없으면 문서 검사 실패). 없으면 log에 "없음". 규칙이 바뀌었으면 CLAUDE.md나 `.claude/rules/`에 링크 한 줄(200줄 한도).
+- **now.md**: 고쳐 쓴다(ADR(now.md 인계)) — **이 PR이 머지된 뒤의 상태로** 쓴다: 이 작업은 "진행 중·머지 대기"로 적지 않고 끝난 것으로 다루며, 남는 것(사람이 할 일·다음 할 일·답이 필요한 것)만 적는다. 끝난 일은 지우고, 다른 작업 항목은 그대로 두고, "마지막 갱신" 날짜. now.md는 main에 들어가야 읽히므로 머지 전 상태로 쓰면 읽힐 때 이미 틀리다.
+- **남길 지식**: 방향·정책을 정했나 → ADR(+ `decisions/README.md` 목록, 새 ADR은 `## 확인 방법` 칸), 원인을 찾았나 → `troubleshooting/`(+ 그 README 목록), 개념을 새로 이해했나 → `concepts/`. **이 작업 중 질문에 답하며 다시 쓸 설명(흐름·현황·비교)을 정리했나** → `concepts/`에 저장하거나 있는 문서를 고친다(이미 README·가이드에 있으면 링크만, ADR(기록 위치)). 새 문서는 `index.md`나 폴더 README에 한 줄(없으면 문서 검사 실패). 없으면 log에 "없음". 규칙이 바뀌었으면 CLAUDE.md나 `.claude/rules/`에 링크 한 줄(200줄 한도).
 
 ## 2. 검사 (레포 루트, Windows는 `python3` 대신 `python`)
 ```bash
-python scripts/check_docs.py                      # frontmatter·based_on·링크·목차 빠짐·요구사항 ID (ADR 0009·0014)
-python scripts/check_context.py                   # CLAUDE.md 200줄·rules paths (ADR 0013)
-python scripts/check_log.py origin/main HEAD      # log.md 갱신·append-only·긴 줄 (ADR 0010) — 커밋을 비교하니 3번 뒤에
+python scripts/check_docs.py                      # frontmatter·based_on·링크·목차 빠짐·요구사항 ID (ADR(문서 검사·요구사항 ID))
+python scripts/check_context.py                   # CLAUDE.md 200줄·rules paths (ADR(경로별 규칙))
+python scripts/check_log.py origin/main HEAD      # log.md 갱신·append-only·긴 줄 (ADR(기록 검사)) — 커밋을 비교하니 3번 뒤에
 ```
 - 고친 곳에 맞는 테스트: 레포의 테스트·빌드 명령(CLAUDE.md나 README에 적힌 것), 스크립트를 고쳤으면 `python scripts/test_<이름>.py`. CI 작업 목록은 `.github/workflows/rules.yml` 맨 위 주석.
 
@@ -45,7 +45,7 @@ gh pr checks --watch                              # 모두 통과할 때까지
 ```
 - CI가 실패하면 원인을 고쳐 새 커밋으로 push한다. **머지는 사용자가 정한다** — 여러 개를 이어서 머지할 때는 `intaeng:merge-train`. 자율 모드면 6번.
 
-## 6. 자율 모드일 때 (spec `## 자율 모드 권한`이 있을 때, ADR 0016)
+## 6. 자율 모드일 때 (spec `## 자율 모드 권한`이 있을 때, ADR(자율 모드))
 - **머지**: 권한 묶음에 머지가 있으면 사용자에게 묻지 않고 `intaeng:merge-train`으로 머지한다 — 5번 검사가 모두 통과했고 이 PR이 권한 밖(묶음의 "묻기" 목록, 예: `git diff --stat origin/main...HEAD`에 공통 모듈 경로)을 건드리지 않았을 때만.
 - **권한 밖을 건드린 PR**: 머지하지 않는다. now.md `## 승인 대기`에 `PR #n — 무엇 — 왜 권한 밖 — 머지하면 풀리는 것` 한 줄, 실험 기록 표에도 한 줄. 이 PR에 기대지 않는 다음 단계로 간다.
 - **기록**: 1번에 더해 실험 기록(`docs/templates/rehearsal.md` 양식)의 "막힌 곳"·"단계별 진행"을 고쳐 쓴다. 이 PR에서 새로 한 가정은 PR 본문 "확인하지 않은 것"에 `spec 가정 n`으로 적는다(리뷰로 확인할 것).

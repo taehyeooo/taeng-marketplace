@@ -216,6 +216,11 @@ class FlowTest(unittest.TestCase):
             for ref in re.findall(r"intaeng:([a-z0-9-]+)", self.read(skill)):
                 self.assertIn(ref, names, f"{skill}이 없는 스킬 intaeng:{ref}를 부른다")
 
+    def test_스킬은_ADR을_번호가_아니라_주제로_가리킨다(self):
+        # 레포마다 ADR 번호가 다르다 — 이미 지식베이스가 있는 레포에서 번호는 엉뚱한 결정을 가리킨다
+        for skill in os.listdir(os.path.join(PLUGIN, "skills")):
+            self.assertNotRegex(self.read(skill), r"ADR \d{4}", skill)
+
 
 class LeakTest(unittest.TestCase):
     def test_플러그인에_원본_레포의_개인_기록이_없다(self):  # intaeng-plugin#R-3

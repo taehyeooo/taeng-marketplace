@@ -62,4 +62,4 @@ description: 화면(웹·앱)을 새로 만들거나 구조를 바꿀 때 디자
 | `emil-design-eng` | 따로 설치 | 2단계 움직임·디테일, 4단계 |
 | `web-design-guidelines` | 따로 설치(Vercel) | 3·4단계 접근성·웹 규칙 |
 
-따로 설치하는 스킬은 그 레포의 `.claude/rules/skills.md` 표와 ADR에 들인 이유를 남긴다(ADR 0005의 방식).
+따로 설치하는 스킬은 그 레포의 `.claude/rules/skills.md` 표와 ADR에 들인 이유를 남긴다(ADR(MCP는 쓰는 것만)의 방식).
