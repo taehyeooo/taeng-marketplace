@@ -59,6 +59,9 @@ def install(target, name=None, intro="", dry_run=False, hooks=True):
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         with open(dest, "w", encoding="utf-8", newline="\n") as f:
             f.write(render(rel, values))
+        if rel.startswith(".githooks/") or rel.endswith(".sh"):
+            # git은 실행 권한이 없는 훅을 조용히 건너뛴다(Linux·macOS) — Windows는 권한을 보지 않아 로컬에서 안 드러난다
+            os.chmod(dest, 0o755)
     if hooks and os.path.isdir(os.path.join(target, ".git")):
         subprocess.run(["git", "-C", target, "config", "core.hooksPath", ".githooks"], check=True)
         print("훅 켬: core.hooksPath = .githooks")

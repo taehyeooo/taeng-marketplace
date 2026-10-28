@@ -84,6 +84,8 @@ class InstallTest(unittest.TestCase):
     def test_훅을_켠다(self):
         self.install()
         self.assertEqual(run(["git", "config", "core.hooksPath"], self.repo).stdout.strip(), ".githooks")
+        if os.name == "posix":  # 실행 권한이 없으면 git이 훅을 건너뛴다
+            self.assertTrue(os.access(os.path.join(self.repo, ".githooks/commit-msg"), os.X_OK))
 
     def test_훅을_끄면_건드리지_않는다(self):
         self.install(hooks=False)
