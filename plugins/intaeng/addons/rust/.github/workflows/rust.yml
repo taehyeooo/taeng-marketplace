@@ -1,0 +1,28 @@
+# 러스트 검사 — 러스트 파일이 바뀐 PR에서만 돈다(러스트가 없는 PR은 시작도 안 함).
+# 포맷(cargo fmt --check)·린트(clippy, 경고도 실패)·테스트. 내용은 scripts/check_rust.sh — 로컬에서도 같은 명령.
+name: rust
+
+on:
+  pull_request:
+    paths:
+      - "**/*.rs"
+      - "**/Cargo.toml"
+      - "**/Cargo.lock"
+      - "scripts/check_rust.sh"
+      - ".github/workflows/rust.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 러스트 도구 (러너에 rustup이 있다)
+        run: rustup component add rustfmt clippy
+
+      - name: 포맷·린트·테스트
+        run: sh scripts/check_rust.sh

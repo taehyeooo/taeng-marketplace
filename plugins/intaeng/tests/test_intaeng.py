@@ -7,6 +7,7 @@
 import io
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -112,6 +113,114 @@ class InstallTest(unittest.TestCase):
         self.install()
         self.assertEqual(self.read("CLAUDE.md"), "내 규칙\n")
         self.assertIn("## Git 컨벤션", self.read("CLAUDE.intaeng.md"))
+
+
+SAMPLE_MAIN = """fn main() {
+    println!("{}", add(1, 2));
+}
+
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn adds() {
+        assert_eq!(super::add(1, 2), 3);
+    }
+}
+"""
+
+
+class RustAddonTest(unittest.TestCase):
+    """--add rust: 뼈대를 깐 레포에 러스트 규칙·검사·CI. cargo가 있으면(CI 러너) 샘플 프로젝트로 검사 스크립트까지."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.repo = self.tmp.name
+        run(["git", "init", "-q"], self.repo)
+        with redirect_stdout(io.StringIO()):
+            install.install(self.repo, hooks=False)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write(self, rel, text):
+        path = os.path.join(self.repo, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+
+    def read(self, rel):
+        with open(os.path.join(self.repo, rel), encoding="utf-8") as f:
+            return f.read()
+
+    def sample(self):
+        self.write("worker/Cargo.toml", '[package]\nname = "worker"\nversion = "0.1.0"\nedition = "2021"\n')
+        self.write("worker/src/main.rs", SAMPLE_MAIN)
+
+    def add(self, **kw):
+        with redirect_stdout(io.StringIO()):
+            return install.add(self.repo, "rust", **kw)
+
+    def test_Cargo_toml이_없으면_멈춘다(self):  # intaeng-plugin#R-21
+        with self.assertRaises(SystemExit):
+            self.add()
+        self.assertFalse(os.path.exists(os.path.join(self.repo, ".claude/rules/rust.md")))
+
+    def test_더한_뒤_컨텍스트_검사가_통과한다(self):  # intaeng-plugin#R-21
+        self.sample()
+        self.add()
+        for rel in (".claude/rules/rust.md", "scripts/check_rust.sh", ".github/workflows/rust.yml"):
+            self.assertTrue(os.path.isfile(os.path.join(self.repo, rel)), rel)
+        rules = self.read("CLAUDE.md").split("## 경로별 규칙")[1].split("\n## ")[0]
+        self.assertIn("](.claude/rules/rust.md)", rules)  # 다른 절이 아니라 경로별 규칙 목록에
+        self.assertIn("target/", self.read(".gitignore").splitlines())
+        result = run([sys.executable, "scripts/check_context.py"], self.repo)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_두_번_해도_줄이_겹치지_않고_덮어쓰지_않는다(self):
+        self.sample()
+        self.add()
+        self.add()
+        self.assertEqual(self.read("CLAUDE.md").count("](.claude/rules/rust.md)"), 1)
+        self.assertEqual(self.read(".gitignore").splitlines().count("target/"), 1)
+        self.assertTrue(os.path.isfile(os.path.join(self.repo, ".claude/rules/rust.intaeng.md")))
+
+    def test_미리보기는_아무것도_쓰지_않는다(self):
+        self.sample()
+        before = self.read("CLAUDE.md")
+        self.add(dry_run=True)
+        self.assertEqual(self.read("CLAUDE.md"), before)
+        self.assertFalse(os.path.exists(os.path.join(self.repo, ".claude/rules/rust.md")))
+        self.assertFalse(os.path.exists(os.path.join(self.repo, ".gitignore")))
+
+    def test_러스트_프로젝트가_없으면_검사_스크립트는_건너뛴다(self):
+        self.sample()
+        self.add()
+        os.remove(os.path.join(self.repo, "worker/Cargo.toml"))
+        result = run(["sh", "scripts/check_rust.sh"], self.repo)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("건너뜀", result.stdout)
+
+    @unittest.skipUnless(shutil.which("cargo"), "cargo 없음 — CI 러너에서 돈다")
+    def test_검사_스크립트가_통과하고_망가뜨리면_잡는다(self):  # intaeng-plugin#R-21
+        self.sample()
+        self.add()
+        run(["git", "add", "-A"], self.repo)  # 스크립트는 git이 아는 Cargo.toml만 본다
+        ok = run(["sh", "scripts/check_rust.sh"], self.repo)
+        self.assertEqual(ok.returncode, 0, ok.stdout + ok.stderr)
+        self.assertIn("러스트 검사 통과", ok.stdout)
+        broken = {
+            "포맷": SAMPLE_MAIN.replace("    a + b", "a+b"),
+            "clippy 경고(쓰지 않는 변수)": SAMPLE_MAIN.replace("    a + b", "    let unused = 1;\n    a + b"),
+            "테스트": SAMPLE_MAIN.replace("super::add(1, 2), 3", "super::add(1, 2), 4"),
+        }
+        for what, text in broken.items():
+            self.write("worker/src/main.rs", text)
+            bad = run(["sh", "scripts/check_rust.sh"], self.repo)
+            self.assertNotEqual(bad.returncode, 0, what)
 
 
 COMMANDS = (("지식베이스", "knowledge-base"), ("기획", "feature-spec"), ("디자인", "design-flow"),
