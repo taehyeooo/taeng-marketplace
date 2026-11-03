@@ -32,6 +32,7 @@
 4. **첫 커밋**: `chore: 지식베이스 뼈대` — 이제부터 커밋 메시지 규칙(`타입: 내용`, AI 서명 금지)을 훅이 검사합니다.
 5. **그다음**: `knowledge-base/now.md`의 "다음 할 일"부터. 일 하나는 `/intaeng:시작` → (기획·디자인) → 구현 → `/intaeng:마무리` → `/intaeng:머지`, 새 세션은 `/intaeng:이어하기`. 기획은 `/intaeng:기획`(아이디어 → 기능명세서 → 구현 순서), 화면은 `/intaeng:디자인`.
 
+- 러스트를 쓰면: 러스트 프로젝트(`Cargo.toml`)를 만든 뒤 "러스트 규칙 더해줘" → 러스트 규칙·검사(fmt·clippy·test)·CI가 더해집니다(`install.py --add rust`).
 - 업데이트: `/plugin marketplace update taeng-marketplace` → 스킬·명령이 새 버전으로 바뀝니다. 이미 깐 파일(CLAUDE.md 등)은 그 레포 것이라 바뀌지 않습니다.
 - 지우기: `/plugin uninstall intaeng@taeng-marketplace` (깐 파일은 그대로 남습니다).
 - 자세히: [plugins/intaeng](plugins/intaeng/README.md)
