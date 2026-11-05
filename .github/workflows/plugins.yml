@@ -6,6 +6,7 @@ on:
   pull_request:
     paths:
       - "plugins/intaeng/**"
+      - ".agents/plugins/**"
       - ".github/workflows/plugins.yml"
 
 permissions:

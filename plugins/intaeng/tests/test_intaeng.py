@@ -5,6 +5,7 @@
 """
 
 import io
+import json
 import os
 import re
 import shutil
@@ -68,7 +69,7 @@ class InstallTest(unittest.TestCase):
                     "knowledge-base/concepts/README.md", "knowledge-base/runbooks/README.md",
                     "docs/specs/.gitkeep", "docs/plans/.gitkeep",
                     ".claude/rules/docs.md", ".claude/rules/skills.md",
-                    ".githooks/commit-msg", ".github/workflows/rules.yml"):
+                    ".githooks/commit-msg", ".github/workflows/rules.yml", "AGENTS.md"):
             self.assertTrue(os.path.isfile(os.path.join(self.repo, rel)), rel)
         for name in ("spec", "plan", "adr", "interview", "troubleshooting", "rehearsal"):
             self.assertTrue(os.path.isfile(os.path.join(self.repo, "docs/templates", name + ".md")), name)
@@ -329,6 +330,52 @@ class FlowTest(unittest.TestCase):
         # 레포마다 ADR 번호가 다르다 — 이미 지식베이스가 있는 레포에서 번호는 엉뚱한 결정을 가리킨다
         for skill in os.listdir(os.path.join(PLUGIN, "skills")):
             self.assertNotRegex(self.read(skill), r"ADR \d{4}", skill)
+
+
+class CodexTest(unittest.TestCase):
+    """Codex 등 다른 에이전트 — 공통 매니페스트(Agent Plugins)·.agents 마켓플레이스·도구 중립 스킬·깐 레포의 AGENTS.md."""
+    MARKET = os.path.dirname(os.path.dirname(PLUGIN))
+
+    def load(self, *parts):
+        with open(os.path.join(*parts), encoding="utf-8") as f:
+            return json.load(f)
+
+    def test_두_매니페스트의_이름과_버전이_같다(self):  # intaeng-plugin#R-22
+        portable = self.load(PLUGIN, "plugin.json")
+        claude = self.load(PLUGIN, ".claude-plugin", "plugin.json")
+        listed = [p for p in self.load(self.MARKET, ".claude-plugin", "marketplace.json")["plugins"] if p["name"] == "intaeng"][0]
+        self.assertEqual(portable["$schema"], "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json")
+        self.assertEqual((portable["name"], portable["version"]), (claude["name"], claude["version"]))
+        self.assertEqual(listed["version"], claude["version"])
+
+    def test_codex_마켓플레이스가_플러그인_폴더를_가리킨다(self):  # intaeng-plugin#R-22
+        market = self.load(self.MARKET, ".agents", "plugins", "marketplace.json")
+        entry = [p for p in market["plugins"] if p["name"] == "intaeng"][0]
+        self.assertEqual(entry["source"]["source"], "local")
+        self.assertTrue(os.path.isfile(os.path.join(self.MARKET, entry["source"]["path"], "plugin.json")))
+        self.assertEqual(entry["policy"]["installation"], "AVAILABLE")
+
+    def test_스킬_글이_Claude만_전제하지_않는다(self):  # intaeng-plugin#R-22
+        # 명령(`/intaeng:기획`)은 Claude Code에만 있다 — 본문에서 부를 때는 스킬 이름을 같이
+        for skill in os.listdir(os.path.join(PLUGIN, "skills")):
+            with open(os.path.join(PLUGIN, "skills", skill, "SKILL.md"), encoding="utf-8") as f:
+                body = f.read().split("\n---\n", 1)[1]
+            self.assertNotRegex(body, r"Claude가|Claude는|다른 Claude", skill)
+            self.assertNotRegex(body, r"`/intaeng:(기획|디자인)`(?!\()", skill)
+            if "${CLAUDE_PLUGIN_ROOT}" in body:
+                self.assertRegex(body, r"PLUGIN_ROOT`|SKILL\.md가 있는 폴더", skill)  # 바꿔 주지 않는 도구용 대안
+
+    def test_깐_레포의_AGENTS_md가_CLAUDE_md와_명령표를_가리킨다(self):  # intaeng-plugin#R-22
+        with tempfile.TemporaryDirectory() as repo:
+            run(["git", "init", "-q"], repo)
+            with redirect_stdout(io.StringIO()):
+                install.install(repo, name="trip-note", hooks=False)
+            with open(os.path.join(repo, "AGENTS.md"), encoding="utf-8") as f:
+                agents = f.read()
+        self.assertTrue(agents.startswith("# trip-note"))
+        self.assertIn("](CLAUDE.md)", agents)
+        for command, skill in COMMANDS:
+            self.assertIn(f"| `/intaeng:{command}` | `{skill}` |", agents)
 
 
 class LeakTest(unittest.TestCase):
