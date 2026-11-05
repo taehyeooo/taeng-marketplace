@@ -1,0 +1,20 @@
+{
+  "name": "taeng-marketplace",
+  "interface": {
+    "displayName": "taeng-marketplace"
+  },
+  "plugins": [
+    {
+      "name": "intaeng",
+      "source": {
+        "source": "local",
+        "path": "./plugins/intaeng"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

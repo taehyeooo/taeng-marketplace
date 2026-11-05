@@ -48,6 +48,7 @@
 - **R-19** 0단계에 이 레포 인터뷰 항목을 더한다: 완료 기준을 무엇으로 재나, 사람 손이 필요한 일, 디자인 레퍼런스(화면이 있으면), 기술 스택의 무료 한도. 3단계 기능 상세마다 "확인 방법"(무엇으로 끝났다고 확인하나) 한 줄.
 - **R-20** "확정" 뒤 plan(`docs/plans/`, `based_on`, 체크 단계가 R-ID 인용)까지 만들고 `check_docs.py`를 통과시킨다.
 - **R-21** 언어별 추가 `install.py --add rust`(2026-11-04): 러스트 규칙 파일(`.claude/rules/rust.md`)·검사 스크립트(`scripts/check_rust.sh` — fmt·clippy·test)·CI `rust`(러스트 파일이 바뀐 PR에서만)를 덮어쓰지 않고 깔고, CLAUDE.md "경로별 규칙"에 한 줄·`.gitignore`에 `target/`. `Cargo.toml`이 없으면 멈춘다(규칙 paths가 가리킬 파일이 없으면 컨텍스트 검사 실패). 두 번 해도 줄이 겹치지 않는다. 검사 스크립트는 CI에서 샘플 cargo 프로젝트로 통과·망가뜨리면 실패를 확인한다.
+- **R-22** Codex에서도 쓴다(2026-11-06): 공통 매니페스트 `plugins/intaeng/plugin.json`(Agent Plugins 스키마, 이름·버전이 `.claude-plugin/plugin.json`과 같음), 레포 `.agents/plugins/marketplace.json`(intaeng만), 스킬 글은 도구 중립("Claude가" 없음, 한글 명령 옆에 스킬 이름, `${CLAUDE_PLUGIN_ROOT}` 대안), 깐 레포에 `AGENTS.md`(→ CLAUDE.md, 명령 ↔ 스킬 표). Claude Code 동작은 그대로.
 - **R-12** 최종 문서는 이 레포 양식으로 저장한다: `docs/specs/YYYY-MM-DD-<이름>.md`(frontmatter `title`·`version`·`status`), 세부 기능마다 요구사항 ID(`R-1`…) — plan·테스트로 이어지고 문서 검사가 돈다. 여러 기능에 걸친 큰 정책은 ADR로도 남길지 묻는다. 사람 손이 필요한 일(키·DB·가입)은 0단계에서 한 번에 묻는다.
 
 ### /디자인

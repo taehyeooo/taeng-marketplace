@@ -9,6 +9,7 @@ description: 새 레포에 "내가 없어도 개발이 돌아가는" 일하는 �
 1. 레포 루트인지 확인한다(`git rev-parse --show-toplevel`). git 레포가 아니면 `git init`을 할지 묻는다.
 2. 두 가지만 묻는다(한 번에): 프로젝트 이름(기본: 폴더 이름), 한 줄 소개(누가, 무엇을 하면, 무엇을 얻나).
 3. 미리보기: `python "${CLAUDE_PLUGIN_ROOT}/scripts/install.py" . --name "<이름>" --intro "<소개>" --dry-run` — 새로 생길 파일과 "옆에(이미 있음)"로 만들 파일을 보여 준다.
+   - `${CLAUDE_PLUGIN_ROOT}`는 이 플러그인 폴더다. 글자 그대로 남아 있으면(바꿔 주지 않는 도구) 환경 변수 `PLUGIN_ROOT`·`CLAUDE_PLUGIN_ROOT`를, 그것도 없으면 이 SKILL.md에서 두 단계 위 폴더(`skills/<스킬>/` 의 위의 위)를 쓴다.
 4. 사용자가 좋다고 하면 `--dry-run` 없이 실행한다. 커밋 메시지 훅(`core.hooksPath .githooks`)도 이때 켠다 — 원하지 않으면 `--no-hooks`.
 5. 확인: `python scripts/check_docs.py`, `python scripts/check_context.py`가 통과하는지 본다.
 6. `*.intaeng.*`로 옆에 만든 파일이 있으면 원래 파일과 무엇이 다른지 보여 주고, 합칠지 사용자와 정한다(덮어쓰지 않는다).

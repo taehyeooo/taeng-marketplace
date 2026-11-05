@@ -9,7 +9,7 @@ description: spec 요구사항(R-ID)이 코드에 실제로 구현됐는지 점�
 
 ## 1. spec 고르기
 - 사용자가 말한 spec, 없으면 지금 브랜치의 plan(`docs/plans/`에서 `issue`가 브랜치 이슈 번호인 것)의 `based_on`, 그것도 없으면 PR 본문의 링크. 모르겠으면 후보를 보여 주고 묻는다.
-- spec에 `- **R-n** ...` ID가 없으면 멈추고 알린다 — 이 스킬은 ID 있는 spec만 본다(필요하면 spec에 ID를 붙이는 것부터, `/intaeng:기획` 6단계).
+- spec에 `- **R-n** ...` ID가 없으면 멈추고 알린다 — 이 스킬은 ID 있는 spec만 본다(필요하면 spec에 ID를 붙이는 것부터, `/intaeng:기획`(`intaeng:feature-spec`) 6단계).
 
 ## 2. 연결된 테스트 모으기
 ```bash
