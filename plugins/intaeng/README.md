@@ -88,6 +88,18 @@ python <플러그인>/scripts/install.py . --add rust
 - `Cargo.toml`이 없으면 멈춥니다(`cargo init` 먼저) — 규칙 파일이 가리킬 러스트 파일이 없으면 컨텍스트 검사가 실패해서입니다.
 - 다른 언어는 쓰게 되면 같은 방식(`addons/<언어>/`)으로 더합니다.
 
+## Codex에서 쓰기
+| | Claude Code | Codex |
+|---|---|---|
+| 매니페스트 | `.claude-plugin/plugin.json` | `plugin.json`(Agent Plugins 형식) — 이름·버전은 테스트가 맞춤 |
+| 마켓플레이스 | 레포 `.claude-plugin/marketplace.json` | 레포 `.agents/plugins/marketplace.json` |
+| 설치 | `/plugin install intaeng@taeng-marketplace` | `codex plugin marketplace add taehyeooo/taeng-marketplace` → `/plugins` |
+| 부르기 | `/intaeng:기획` 등 한글 명령, 또는 말 | `@intaeng`, 또는 말("기획하자") — 한글 명령(`commands/`)은 Codex에 없음 |
+| 깐 레포가 읽는 규칙 | `CLAUDE.md`, `.claude/rules/`(경로별 자동) | `AGENTS.md` → `CLAUDE.md`, `.claude/rules/`는 에이전트가 직접 엶 |
+
+- 스킬 글은 도구 중립으로 씁니다("Claude가" 대신 "에이전트가", 명령 옆에 스킬 이름). 테스트가 막습니다.
+- 플러그인 폴더 경로는 `${CLAUDE_PLUGIN_ROOT}`로 쓰고, 바꿔 주지 않는 도구를 위해 대안(`PLUGIN_ROOT`, SKILL.md 위치 기준)을 같이 적습니다.
+
 ## 넣지 않는 것
 이 플러그인은 공개 레포에 있습니다. 일하는 **방법**만 담고, 만든 사람의 결정 기록·작업 기록·조사·다른 프로젝트는 담지 않습니다. 테스트(`tests/test_intaeng.py`)가 그런 내용이 섞이면 실패합니다.
 

@@ -19,6 +19,18 @@
 
 필요한 것만 골라 설치해도 됩니다. 업데이트는 `/plugin marketplace update taeng-marketplace`.
 
+### Codex에서 쓰기
+
+intaeng은 Codex(OpenAI)에서도 씁니다. 스킬(`SKILL.md`)은 같은 파일을 그대로 쓰고, Codex용 매니페스트(`plugins/intaeng/plugin.json`, Agent Plugins 형식)와 마켓플레이스(`.agents/plugins/marketplace.json`)를 따로 둡니다.
+
+1. **마켓플레이스 등록**: 터미널에서 `codex plugin marketplace add taehyeooo/taeng-marketplace`
+2. **설치**: `codex`를 켜고 `/plugins` → taeng-marketplace에서 intaeng 설치 → **새 세션**을 시작
+3. **쓰기**: Codex에는 `/intaeng:기획` 같은 한글 명령이 없습니다. `@intaeng`으로 플러그인을 부르거나, 말로 "지식베이스 깔아줘", "기획하자"라고 하면 같은 스킬이 돕니다. 명령 ↔ 스킬 표는 깐 레포의 `AGENTS.md`에 있습니다.
+4. **깐 레포**: Codex는 `CLAUDE.md` 대신 `AGENTS.md`를 읽습니다. `/지식베이스`가 `AGENTS.md`(→ `CLAUDE.md`를 읽으라는 안내와 명령표)도 같이 깝니다. 이미 지식베이스를 깐 레포는 `AGENTS.md`만 더 넣으면 됩니다("지식베이스 다시 깔아줘" — 있는 파일은 덮어쓰지 않음).
+
+- Codex 마켓플레이스에는 intaeng만 올렸습니다. 다른 플러그인은 Claude Code 전용 명령에 기댑니다.
+- 업데이트: `codex plugin marketplace upgrade taeng-marketplace`
+
 ### intaeng으로 새 레포 시작하기
 
 "내가 없어도 개발이 돌아가는 레포"를 만드는 뼈대입니다. Claude Code에서:
