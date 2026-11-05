@@ -14,6 +14,12 @@ description: 새 레포에 "내가 없어도 개발이 돌아가는" 일하는 �
 6. `*.intaeng.*`로 옆에 만든 파일이 있으면 원래 파일과 무엇이 다른지 보여 주고, 합칠지 사용자와 정한다(덮어쓰지 않는다).
 7. 결과 보고: 깐 것, 다음 할 일(첫 기능 spec — `docs/templates/spec.md`, now.md "다음 할 일"). 첫 커밋은 사용자 확인 뒤 `chore: 지식베이스 뼈대`(트레일러·AI 서명 없이).
 
+## 언어별 추가 (러스트)
+레포에 러스트 프로젝트가 있으면(`Cargo.toml` — 없으면 `cargo init` 먼저) 규칙·검사·CI를 더한다. 뼈대를 깐 뒤 언제든, 두 번 해도 된다.
+1. 미리보기: `python "${CLAUDE_PLUGIN_ROOT}/scripts/install.py" . --add rust --dry-run`
+2. 좋다고 하면 `--dry-run` 없이. 깔리는 것: `.claude/rules/rust.md`(커밋 전 검사·테스트 먼저·`unwrap` 금지·다른 서버와 쓸 때 `127.0.0.1`만), `scripts/check_rust.sh`(fmt·clippy·test), `.github/workflows/rust.yml`(러스트 파일이 바뀐 PR에서만), CLAUDE.md "경로별 규칙"에 한 줄, `.gitignore`에 `target/`.
+3. 확인: `python scripts/check_context.py`, 러스트 도구가 있으면 `sh scripts/check_rust.sh`. 이 PC에 러스트 도구(rustup)가 없으면 설치는 사람 단계로 알린다.
+
 ## 깔리는 것
 - `CLAUDE.md` — 늘 지킬 규칙만(작업 시작 전, 핵심 규칙, 기록 위치, 워크트리 흐름, Git 컨벤션, AI 도구)
 - `knowledge-base/` — index, log(append-only), now(인계 메모), decisions(기본 원칙 ADR 16개와 목록), troubleshooting·concepts·runbooks README

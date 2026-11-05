@@ -73,6 +73,21 @@
 - 이미 있는 파일은 덮어쓰지 않고 옆에 `*.intaeng.*`로 만듭니다.
 - 먼저 미리보기(무엇이 생기나)를 보여 주고, 승인 뒤 깝니다.
 
+## 언어별 추가 — 러스트
+러스트 프로젝트(`Cargo.toml`)가 있는 레포에서 "러스트 규칙 더해줘"라고 하거나 직접:
+```
+python <플러그인>/scripts/install.py . --add rust
+```
+| 깔리는 것 | 내용 |
+|---|---|
+| `.claude/rules/rust.md` | 러스트 파일을 열 때 자동으로 읽히는 규칙: 커밋 전 검사, 테스트 먼저, `unwrap` 금지, 다른 서버와 같이 쓰면 러스트는 `127.0.0.1`의 계산 작업자만 |
+| `scripts/check_rust.sh` | cargo 프로젝트마다 `cargo fmt --check`·`clippy -D warnings`·`cargo test` |
+| `.github/workflows/rust.yml` | 러스트 파일이 바뀐 PR에서만 위 검사 |
+| CLAUDE.md·`.gitignore` | "경로별 규칙"에 한 줄, `target/` 한 줄(이미 있으면 그대로) |
+
+- `Cargo.toml`이 없으면 멈춥니다(`cargo init` 먼저) — 규칙 파일이 가리킬 러스트 파일이 없으면 컨텍스트 검사가 실패해서입니다.
+- 다른 언어는 쓰게 되면 같은 방식(`addons/<언어>/`)으로 더합니다.
+
 ## 넣지 않는 것
 이 플러그인은 공개 레포에 있습니다. 일하는 **방법**만 담고, 만든 사람의 결정 기록·작업 기록·조사·다른 프로젝트는 담지 않습니다. 테스트(`tests/test_intaeng.py`)가 그런 내용이 섞이면 실패합니다.
 
