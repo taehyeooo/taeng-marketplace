@@ -1,7 +1,7 @@
 {
   "name": "lidflow",
   "description": "노트북 덮개를 닫아도 잠들지 않게 켜고 끄기 — /lidon·/lidoff·/lidstatus. 휴대폰 원격(Orca·Paseo 등)으로 에이전트를 계속 돌릴 때. macOS(pmset)·Windows(powercfg)",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "taehyeooo"
   },

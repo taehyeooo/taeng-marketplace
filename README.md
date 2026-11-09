@@ -29,7 +29,8 @@ intaeng은 Codex(OpenAI)에서도 씁니다. 스킬(`SKILL.md`)은 같은 파일
 3. **쓰기**: Codex에는 `/intaeng:기획` 같은 한글 명령이 없습니다. `@intaeng`으로 플러그인을 부르거나, 말로 "지식베이스 깔아줘", "기획하자"라고 하면 같은 스킬이 돕니다. 명령 ↔ 스킬 표는 깐 레포의 `AGENTS.md`에 있습니다.
 4. **깐 레포**: Codex는 `CLAUDE.md` 대신 `AGENTS.md`를 읽습니다. `/지식베이스`가 `AGENTS.md`(→ `CLAUDE.md`를 읽으라는 안내와 명령표)도 같이 깝니다. 이미 지식베이스를 깐 레포는 `AGENTS.md`만 더 넣으면 됩니다("지식베이스 다시 깔아줘" — 있는 파일은 덮어쓰지 않음).
 
-- Codex 마켓플레이스에는 intaeng만 올렸습니다. 다른 플러그인은 Claude Code 전용 명령에 기댑니다.
+- Codex 마켓플레이스에는 intaeng과 lidflow를 올렸습니다. 다른 플러그인은 Claude Code 전용 명령에 기댑니다.
+- lidflow: `/plugins`에서 lidflow 설치 → 새 세션에서 `@lidflow` 또는 "덮개 닫아도 안 잠들게 켜줘" / "원래대로 돌려줘" / "덮개 상태 알려줘"
 - 업데이트: `codex plugin marketplace upgrade taeng-marketplace`
 
 ### intaeng으로 새 레포 시작하기

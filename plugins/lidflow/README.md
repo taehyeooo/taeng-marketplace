@@ -25,6 +25,13 @@ Amphetamine의 덮개 닫힘 모드는 Apple Silicon에서 전원 상태가 바�
 - 설정은 재부팅 뒤에도 남는다. **가방에 넣기 전에 꼭 `/lidoff`** — 잠들지 않은 채 가방 안에 있으면 열이 차고 배터리가 닳는다.
 - 터미널에서 바로: `bash <플러그인 경로>/scripts/lid.sh on|off|status`
 
+## Codex에서 쓰기
+스킬(`SKILL.md`)과 `lid.sh`를 그대로 같이 쓰고, Codex용 매니페스트(`plugin.json`, Agent Plugins 형식)를 따로 둔다.
+```
+codex plugin marketplace add taehyeooo/taeng-marketplace
+```
+`codex` → `/plugins` → taeng-marketplace에서 lidflow 설치 → **새 세션**. Codex에는 `/lidon` 같은 명령이 없으니 `@lidflow`로 부르거나 "덮개 닫아도 안 잠들게 켜줘", "원래대로 돌려줘", "덮개 상태 알려줘"라고 말한다.
+
 ## 비용
 외부 서비스·API를 쓰지 않는다.
 
