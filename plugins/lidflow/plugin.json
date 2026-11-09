@@ -1,0 +1,33 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "lidflow",
+  "version": "0.2.0",
+  "description": "노트북 덮개를 닫아도 잠들지 않게 켜고 끄기 — /lidon·/lidoff·/lidstatus. 휴대폰 원격(Orca·Paseo 등)으로 에이전트를 계속 돌릴 때. macOS(pmset)·Windows(powercfg)",
+  "author": {
+    "name": "taehyeooo"
+  },
+  "homepage": "https://github.com/taehyeooo/taeng-marketplace/tree/main/plugins/lidflow",
+  "repository": "https://github.com/taehyeooo/taeng-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "sleep",
+    "lid",
+    "remote",
+    "macos",
+    "windows"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "lidflow",
+        "shortDescription": "노트북 덮개를 닫아도 잠들지 않게 켜고 끄기 (macOS·Windows)",
+        "developerName": "taehyeooo",
+        "category": "Productivity",
+        "defaultPrompt": [
+          "덮개 닫아도 안 잠들게 켜줘",
+          "덮개 잠자기 원래대로 돌려줘"
+        ]
+      }
+    }
+  }
+}
