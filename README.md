@@ -15,6 +15,7 @@
 /plugin install evalflow@taeng-marketplace
 /plugin install reviewflow@taeng-marketplace
 /plugin install intaeng@taeng-marketplace
+/plugin install lidflow@taeng-marketplace
 ```
 
 필요한 것만 골라 설치해도 됩니다. 업데이트는 `/plugin marketplace update taeng-marketplace`.
@@ -71,6 +72,7 @@ intaeng은 Codex(OpenAI)에서도 씁니다. 스킬(`SKILL.md`)은 같은 파일
 | [evalflow](plugins/evalflow) | AI 출력 정확도를 promptfoo로 정답 대비 채점·기록, 새로 틀린 케이스 알림, 프롬프트·코드를 읽고 추천 | 프롬프트·모델·후처리를 바꿀 때 |
 | [reviewflow](plugins/reviewflow) | 정확성·테스트·보안·프로젝트 규칙(ADR) 네 관점 동시 리뷰 + 검증 | PR을 만들기 전·머지 전 |
 | [intaeng](plugins/intaeng) | `/intaeng:지식베이스` — 내가 없어도 개발이 돌아가게 일하는 방식의 뼈대(규칙·지식베이스 구조·기본 원칙 ADR·양식·검사·훅·CI)를 깐다. `/intaeng:기획` — 기능명세서·구현 순서. `/intaeng:디자인` — 디자인 4단계 | 새 레포를 시작할 때 |
+| [lidflow](plugins/lidflow) | `/lidon`·`/lidoff`·`/lidstatus` — 노트북 덮개를 닫아도 잠들지 않게 켜고 끄기(macOS·Windows) | 휴대폰 원격으로 에이전트를 돌려 둘 때 |
 
 ## 공통 원칙
 
