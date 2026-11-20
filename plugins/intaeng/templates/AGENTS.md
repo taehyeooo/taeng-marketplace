@@ -10,7 +10,7 @@
 |---|---|---|
 | `/intaeng:지식베이스` | `knowledge-base` | "지식베이스 깔아줘", "러스트 규칙 더해줘" |
 | `/intaeng:기획` | `feature-spec` | "기획하자", "기능명세서 뽑아줘" |
-| `/intaeng:디자인` | `design-flow` | "디자인하자", "화면 시안 보여줘" |
+| `/intaeng:디자인` | `design` | "디자인하자", "화면 시안 보여줘" |
 | `/intaeng:시작` | `start-task` | "새 작업 시작해줘" |
 | `/intaeng:이어하기` | `resume` | "어디까지 했지" |
 | `/intaeng:마무리` | `wrap-up` | "마무리해줘", "PR 올려줘" |
