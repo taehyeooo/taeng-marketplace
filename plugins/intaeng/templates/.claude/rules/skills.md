@@ -15,7 +15,7 @@ intaeng 플러그인 명령(`/plugin install intaeng@taeng-marketplace`):
 |---|---|
 | 새 레포에 이 뼈대를 깔 때 | `/intaeng:지식베이스` |
 | 새 기능·새 프로젝트를 기획할 때 — 단계별로 묻고 기능명세서(spec)로 | `/intaeng:기획` |
-| 화면을 새로 만들거나 구조를 바꿀 때 — 사용자 흐름부터 검수·보고까지 | `/intaeng:디자인` (`intaeng:design`, 문구·UX 검수 포함) |
+| 화면을 새로 만들거나 구조를 바꿀 때 — 사용자 흐름부터 검수·보고까지 | `/intaeng:디자인` (`intaeng:design`, 7단계 화면·한국어 문구 체크리스트와 UX 검수 포함) |
 | 새 세션, "하던 거 뭐였지" | `/intaeng:이어하기` |
 | 새 일 시작 — 이슈·브랜치·워크트리 | `/intaeng:시작` |
 | PR 올리기 전 — 기록·검사·확인 증거 | `/intaeng:마무리` |

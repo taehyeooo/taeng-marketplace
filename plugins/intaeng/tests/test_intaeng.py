@@ -14,6 +14,7 @@ import sys
 import tempfile
 import unittest
 from contextlib import redirect_stdout
+from pathlib import Path
 
 PLUGIN = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(PLUGIN, "scripts"))
@@ -278,7 +279,66 @@ class FeatureSpecTest(unittest.TestCase):
 
 
 class DesignTest(unittest.TestCase):
-    def test_디자인_스킬과_참고_링크가_설치_패키지에_있다(self):
+    def read(self, rel="skills/design/SKILL.md"):
+        return (Path(PLUGIN) / rel).read_text(encoding="utf-8")
+
+    def test_8단계_이름과_순서(self):  # intaeng-plugin#R-13
+        steps = re.findall(r"^\| ([1-8]\. [^|]+) \|", self.read(), re.M)
+        self.assertEqual(steps, ["1. 사용자 흐름 확인", "2. 도구 고르기", "3. 시안 3개",
+                                 "4. 사용자 선택", "5. 세부", "6. 적용", "7. 검수", "8. 보고"])
+
+    def test_선택_전_코드_변경과_설치_승인_경계(self):  # intaeng-plugin#R-14 intaeng-plugin#R-15
+        text = self.read()
+        for rule in ("사용자 선택 전에는 실제 앱 코드를 바꾸지 않고", "승인 전에는 설치하지 않는다",
+                     "무료인지", "설치 스크립트·실행 명령", "유료면 설치하지 않고 다시 묻는다"):
+            self.assertIn(rule, text)
+
+    def test_보고는_설계_구현_사용자_테스트를_구분(self):  # intaeng-plugin#R-15
+        report = self.read().split("## 보고 형식", 1)[1].split("## 사용 결과 기록 예시", 1)[0]
+        labels = re.findall(r"^\| ([^|]+) \|", report, re.M)
+        self.assertEqual(labels, ["구분", "설계 제안", "구현 확인", "실제 사용자 테스트 결과"])
+        self.assertIn("하지 않았다면 검증 필요", report)
+        self.assertIn("실제 사용자 테스트로 보고하지 않는다", report)
+
+    def test_자율_모드도_사용자_시안_선택을_기다린다(self):  # intaeng-plugin#R-14
+        start = self.read("skills/start-task/SKILL.md").split("## 6. 자율 모드", 1)[1]
+        self.assertIn("시안 선택은 가정으로 대신하지 않는다", start)
+        self.assertIn("사용자 선택이 없으면 승인 대기에", start)
+        for path in ("skills/design/SKILL.md", "skills/delegate-pr/SKILL.md",
+                     "templates/knowledge-base/decisions/0016-autonomous-mode-permission-bundle.md"):
+            self.assertIn("자율 모드에서도 시안 선택은 사용자 몫이며, 워커는 가정으로 고르지 않는다", self.read(path))
+
+    def test_검수_구체_규칙과_사용_기록을_유지한다(self):  # intaeng-plugin#R-15
+        text = self.read()
+        checklist = text.split("## 7단계 검수 체크리스트", 1)[1].split("## 다른 레포", 1)[0]
+        for rule in ("해요체", "4.5:1", "3:1", "7:1", "44×44px", "8px", "word-break: keep-all",
+                     "overflow-wrap: anywhere", "Intl.NumberFormat('ko-KR')",
+                     "Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul' })"):
+            self.assertIn(rule, checklist)
+        self.assertIn("사용자 흐름·화면별 상태·예외 상황·사용자 테스트 결과", text)
+        sample = text.split("## 사용 결과 기록 예시", 1)[1]
+        for field in ("작업:", "사용자 목표:", "UX 흐름:", "선택:", "이유:", "UI 범위:",
+                      "UX 범위:", "구현 검증:", "사용성 검증:", "기록:", "미확인:"):
+            self.assertIn(field, sample)
+
+    def test_레포_전체에_옛_디자인_이름이_없다(self):  # intaeng-plugin#R-13
+        root = Path(PLUGIN).parents[1]
+        names = ["design" + "-flow", "design" + "-review", "ux-writing" + "-ko"]
+        paths = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+                                        cwd=root).decode("utf-8").split("\0")
+        for rel in filter(None, paths):
+            path = root / rel
+            if not path.is_file():
+                continue
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeError:
+                continue  # binary assets
+            for name in names:
+                self.assertNotIn(name, rel, rel)
+                self.assertNotIn(name, text, rel)
+
+    def test_디자인_스킬과_참고_링크가_설치_패키지에_있다(self):  # intaeng-plugin#R-13
         from pathlib import Path
         folder = Path(PLUGIN) / "skills" / "design"
         text = (folder / "SKILL.md").read_text(encoding="utf-8")
@@ -375,7 +435,34 @@ class CodexTest(unittest.TestCase):
             self.assertIn(f"| `/intaeng:{command}` | `{skill}` |", agents)
 
 
+# Source provenance is not part of the portable design package.
+DESIGN_SOURCE_PRIVATE = re.compile(
+    r"taeng-agent-manager|docs/design-guide|원본 blob|a17422fb980ed1a45161036e4075fd7a574e8a0d"
+    r"|(?:기준|원본|출처):[^\n]*(?:PR\s*#\d+|\b[0-9a-f]{40}\b)", re.I)
+
+
 class LeakTest(unittest.TestCase):
+    def test_디자인_원본_레포_식별자가_공개_파일에_없다(self):  # intaeng-plugin#R-3
+        root = Path(PLUGIN).parents[1]
+        paths = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+                                        cwd=root).decode("utf-8").split("\0")
+        for rel in filter(None, paths):
+            path = root / rel
+            if not path.is_file() or path.resolve() == Path(__file__).resolve():
+                continue  # detector definitions intentionally name the forbidden source
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeError:
+                continue
+            self.assertNotRegex(text, DESIGN_SOURCE_PRIVATE, rel)
+
+    def test_원본_식별자_검사는_레포_브랜치_출처_해시를_잡는다(self):
+        for text in ("taehyeooo/taeng-agent-manager", "docs/design-guide", "원본 blob: deadbeef",
+                     "a17422fb980ed1a45161036e4075fd7a574e8a0d", "기준: 다른 문서(PR #15)",
+                     "출처: " + "f" * 40):
+            self.assertRegex(text, DESIGN_SOURCE_PRIVATE)
+
+
     def test_플러그인에_원본_레포의_개인_기록이_없다(self):  # intaeng-plugin#R-3
         found = []
         for dirpath, dirs, files in os.walk(PLUGIN):
