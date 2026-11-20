@@ -224,7 +224,7 @@ class RustAddonTest(unittest.TestCase):
             self.assertNotEqual(bad.returncode, 0, what)
 
 
-COMMANDS = (("지식베이스", "knowledge-base"), ("기획", "feature-spec"), ("디자인", "design-flow"),
+COMMANDS = (("지식베이스", "knowledge-base"), ("기획", "feature-spec"), ("디자인", "design"),
             ("시작", "start-task"), ("마무리", "wrap-up"), ("이어하기", "resume"), ("머지", "merge-train"),
             ("맡기기", "delegate-pr"), ("스펙점검", "spec-check"))
 
@@ -277,33 +277,30 @@ class FeatureSpecTest(unittest.TestCase):
             self.assertNotIn("plan", result.stdout)
 
 
-class DesignFlowTest(unittest.TestCase):
-    SKILLS = os.path.join(PLUGIN, "skills")
+class DesignTest(unittest.TestCase):
+    def test_디자인_스킬과_참고_링크가_설치_패키지에_있다(self):
+        from pathlib import Path
+        folder = Path(PLUGIN) / "skills" / "design"
+        text = (folder / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("name: design\n", text)
+        links = re.findall(r"\]\((references/[^)]+)\)", text)
+        self.assertEqual(len(set(links)), 14)
+        self.assertEqual(set(links), {f"references/{f.name}" for f in (folder / "references").glob("*.md")})
+        for link in links:
+            body = (folder / link).read_text(encoding="utf-8")
+            self.assertIn("핵심 기능", body, link)
+            self.assertIn("UX 활용 상황", body, link)
+            self.assertRegex(body, r"https://", link)
 
-    def read(self, *parts):
-        with open(os.path.join(self.SKILLS, *parts), encoding="utf-8") as f:
-            return f.read()
-
-    def test_네_단계와_원칙이_다_있다(self):  # intaeng-plugin#R-13 intaeng-plugin#R-14
-        text = self.read("design-flow", "SKILL.md")
-        for heading in ("## 1. 구조 시안 3개", "## 2. 세부 시안", "## 3. 적용", "## 4. 고도화"):
-            self.assertIn(heading, text)
-        for rule in ("큰 것 → 작은 것", "아티팩트로 그리지 않는다", "개발 서버에서만", "지식베이스 먼저",
-                     "같이 하기", "맡기기", "3↔4", "스킬 적용 표", "대응한 스킬 규칙", "44×44px"):
-            self.assertIn(rule, text)
-
-    def test_함께_쓰는_스킬이_플러그인에_있다(self):  # intaeng-plugin#R-15
-        text = self.read("design-flow", "SKILL.md")
-        for skill in ("design-review", "ux-writing-ko"):
-            self.assertIn("intaeng:" + skill, text)
-            self.assertIn(f"name: {skill}\n", self.read(skill, "SKILL.md"))
-
-    def test_나란히_보기는_외부_파일_없이_돈다(self):  # intaeng-plugin#R-13
-        html = self.read("design-flow", "compare.html")
-        self.assertIn("${CLAUDE_PLUGIN_ROOT}/skills/design-flow/compare.html", self.read("design-flow", "SKILL.md"))
-        self.assertNotRegex(html, r"<(script|link)[^>]+(src|href)=\"https?://")
-        for part in ("<iframe", "URLSearchParams", 'name="base"', 'name="v"'):
-            self.assertIn(part, html.replace("createElement('iframe')", "<iframe"))
+    def test_명령과_템플릿이_존재하는_스킬만_부른다(self):
+        from pathlib import Path
+        base = Path(PLUGIN)
+        names = {p.name for p in (base / "skills").iterdir() if p.is_dir()}
+        self.assertEqual(names, {skill for _, skill in COMMANDS})
+        for directory in ("commands", "templates"):
+            for path in (base / directory).rglob("*.md"):
+                for ref in re.findall(r"intaeng:([a-z0-9-]+)", path.read_text(encoding="utf-8")):
+                    self.assertIn(ref, names, str(path))
 
 
 class FlowTest(unittest.TestCase):
