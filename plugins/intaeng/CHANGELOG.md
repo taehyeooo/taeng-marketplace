@@ -8,6 +8,6 @@
 - Claude 매니페스트·마켓플레이스와 Codex 공통 매니페스트 버전을 함께 올렸다. 두 도구 모두 같은 `skills/design/SKILL.md`를 사용한다.
 - 새로 깔리는 템플릿과 다른 스킬의 호출을 갱신했다. 이미 설치한 프로젝트의 AGENTS.md·스킬 표는 프로젝트 소유이므로 해당 디자인 항목을 `design`으로 바꿔야 한다.
 
-기준: 사용자 디자인 가이드(2026-11-20) 기준. 기기 정보와 특정 서비스·매니저 문구를 일반화했다.
+기준 문서 날짜: 사용자 디자인 가이드(2026-11-20). 플러그인 버전: 0.7.0. 별도 원본 문서 버전은 부여하지 않았다. 기기 정보와 특정 서비스·매니저 문구를 일반화했다.
 
 갱신(병합 후): Claude Code에서 `/plugin marketplace update taeng-marketplace` 후 터미널에서 `claude plugin update intaeng@taeng-marketplace`, 새 세션. Codex에서 `codex plugin marketplace upgrade taeng-marketplace` 후 `/plugins`에서 intaeng 갱신 상태를 확인하고 새 세션을 시작한다.

@@ -11,3 +11,4 @@
 - **GitHub:** https://github.com/remotion-dev/remotion
 - **공식 스킬 안내:** https://www.remotion.dev/docs/ai/skills
 - **스킬 저장소:** https://github.com/remotion-dev/skills
+- **적용 메모:** 사용 전 현재 라이선스·무료 이용 조건과 실행 환경을 공식 문서에서 확인하고 최종 영상의 렌더링·재생을 검증한다.

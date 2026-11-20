@@ -293,6 +293,38 @@ class DesignTest(unittest.TestCase):
                      "무료인지", "설치 스크립트·실행 명령", "유료면 설치하지 않고 다시 묻는다"):
             self.assertIn(rule, text)
 
+    def test_범위_축소와_교차_검수_예외를_숨기지_않는다(self):  # intaeng-plugin#R-14
+        workflow = self.read().split("## 진행 순서", 1)[1].split("## 도구 선택과 설치", 1)[0]
+        for rule in ("건너뛴 단계를 보고한다", "교차 검수는 미실시로 명시한다",
+                     "교차 검수와 독립 시안 제작을 했다고 꾸미지 않는다",
+                     '"맡길게"만으로 시안을 대신 선택하지 않는다'):
+            self.assertIn(rule, workflow)
+
+    def test_현재_기기의_실제_설치를_확인한다(self):  # intaeng-plugin#R-15
+        tools = self.read().split("## 도구 선택과 설치", 1)[1].split("## 빠른 선택표", 1)[0]
+        self.assertIn("작업할 기기의 사용 가능한 스킬·플러그인·명령과 실제 설치 상태를 확인한다", tools)
+        self.assertIn("다른 기기에서 쓸 수 있다는 보고를 현재 기기의 설치 증거로 삼지 않는다", tools)
+
+    def test_한국어_문구_작성_요청으로도_발견된다(self):  # intaeng-plugin#R-15
+        metadata = self.read().split("---", 2)[1]
+        description = next(line for line in metadata.splitlines() if line.startswith("description:"))
+        for trigger in ("문구 다듬어줘", "오류 메시지 써줘", "안내 문구 써줘"):
+            self.assertIn(trigger, description)
+
+    def test_기준_문서_날짜와_ADR_변경_기록이_일치한다(self):
+        self.assertIn("기준 문서 날짜(2026-11-20)", self.read("README.md"))
+        changelog = self.read("CHANGELOG.md")
+        self.assertIn("기준 문서 날짜: 사용자 디자인 가이드(2026-11-20)", changelog)
+        self.assertIn("플러그인 버전: " + json.loads(self.read("plugin.json"))["version"], changelog)
+        self.assertIn("별도 원본 문서 버전은 부여하지 않았다", changelog)
+        adr = self.read("templates/knowledge-base/decisions/0016-autonomous-mode-permission-bundle.md")
+        history = adr.split("## 변경 이력", 1)[1]
+        self.assertIn("2026-11-20 · v2", history)
+        self.assertIn("시안 선택은 사용자 몫", history)
+        index = self.read("templates/knowledge-base/decisions/README.md")
+        row = next(line for line in index.splitlines() if "0016-" in line)
+        self.assertIn("2026-11-20", row)
+
     def test_보고는_설계_구현_사용자_테스트를_구분(self):  # intaeng-plugin#R-15
         report = self.read().split("## 보고 형식", 1)[1].split("## 사용 결과 기록 예시", 1)[0]
         labels = re.findall(r"^\| ([^|]+) \|", report, re.M)
@@ -304,9 +336,19 @@ class DesignTest(unittest.TestCase):
         start = self.read("skills/start-task/SKILL.md").split("## 6. 자율 모드", 1)[1]
         self.assertIn("시안 선택은 가정으로 대신하지 않는다", start)
         self.assertIn("사용자 선택이 없으면 승인 대기에", start)
-        for path in ("skills/design/SKILL.md", "skills/delegate-pr/SKILL.md",
-                     "templates/knowledge-base/decisions/0016-autonomous-mode-permission-bundle.md"):
-            self.assertIn("자율 모드에서도 시안 선택은 사용자 몫이며, 워커는 가정으로 고르지 않는다", self.read(path))
+        sections = [
+            self.read().split("## 다른 레포·다른 기기 작업자에게 맡길 때", 1)[1].split("## 보고 형식", 1)[0],
+            self.read("skills/delegate-pr/SKILL.md").split("## 규칙", 1)[1].split("## 끝내기", 1)[0],
+            self.read("templates/knowledge-base/decisions/0016-autonomous-mode-permission-bundle.md").split("## 결정", 1)[1].split("## 이유", 1)[0],
+        ]
+        for section in sections:
+            self.assertIn("자율 모드에서도 시안 선택은 사용자 몫이며, 워커는 가정으로 고르지 않는다", section)
+        for rule in ("이번에 맡은 단계", "파일 위치와 형식", "고른 도구·선택 이유·UI/UX 적용 범위",
+                     "그 기기에서 실제로 쓸 수 있는지 확인", "쓴 스킬과 그 스킬이 바꾼 결정을 보고",
+                     "프로젝트별 디자인 결정과 금지 사항", "UX 체크리스트",
+                     "사용자 선택 전 실제 앱 코드 변경 금지", "데이터 바꾸는 동작 금지",
+                     "비용 드는 폰트·에셋·서비스 금지", "승인·무료·설치 내용 확인", "기기와 설치 결과를 보고"):
+            self.assertIn(rule, sections[0])
 
     def test_검수_구체_규칙과_사용_기록을_유지한다(self):  # intaeng-plugin#R-15
         text = self.read()
@@ -349,7 +391,9 @@ class DesignTest(unittest.TestCase):
         for link in links:
             body = (folder / link).read_text(encoding="utf-8")
             self.assertIn("핵심 기능", body, link)
-            self.assertIn("UX 활용 상황", body, link)
+            self.assertRegex(body, r"\*\*UI(?:·영상 표현)? 활용 상황:\*\*\s+\S", link)
+            self.assertRegex(body, r"\*\*UX 활용 상황:\*\*\s+\S", link)
+            self.assertRegex(body, r"\*\*적용 메모:\*\*\s+\S", link)
             self.assertRegex(body, r"https://", link)
 
     def test_명령과_템플릿이_존재하는_스킬만_부른다(self):

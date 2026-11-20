@@ -32,4 +32,4 @@
 | [0013](0013-path-scoped-context-rules.md) | CLAUDE.md는 늘 지킬 규칙만(200줄 이하), 경로별 규칙은 .claude/rules/에 paths로 | active | 2026-10-28 |
 | [0014](0014-requirement-trace.md) | spec 요구사항 ID(R-번호)를 plan과 테스트가 인용하고 CI가 검사 | active | 2026-10-28 |
 | [0015](0015-now-md-handoff.md) | 지금 상태는 now.md 하나에 고쳐 쓰는 인계 메모 | active | 2026-10-28 |
-| [0016](0016-autonomous-mode-permission-bundle.md) | 자율 모드 — 시작할 때 받은 권한 묶음 안에서는 묻지 않고 진행, 밖은 승인 대기 | active | 2026-10-28 |
+| [0016](0016-autonomous-mode-permission-bundle.md) | 자율 모드 — 시작할 때 받은 권한 묶음 안에서는 묻지 않고 진행, 밖은 승인 대기 | active | 2026-11-20 |

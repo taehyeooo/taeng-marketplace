@@ -105,7 +105,7 @@ Claude Code는 `.claude-plugin/plugin.json`의 플러그인에서 `skills/design
 - Claude Code: `/plugin marketplace update taeng-marketplace` 후 터미널에서 `claude plugin update intaeng@taeng-marketplace`, 새 세션 시작.
 - Codex: `codex plugin marketplace upgrade taeng-marketplace` 후 `/plugins`에서 intaeng 갱신 상태 확인, 새 세션 시작.
 - 이미 깔린 프로젝트의 `AGENTS.md`와 `.claude/rules/skills.md`는 프로젝트 소유입니다. 디자인 항목을 `design`으로 맞추되 파일 전체를 덮어쓰지 않습니다.
-- [변경 기록](CHANGELOG.md)에 통합 범위와 원본 문서 버전을 기록했습니다.
+- [변경 기록](CHANGELOG.md)에 통합 범위·플러그인 버전과 기준 문서 날짜(2026-11-20)를 기록했습니다.
 
 ## 넣지 않는 것
 이 플러그인은 공개 레포에 있습니다. 일하는 **방법**만 담고, 만든 사람의 결정 기록·작업 기록·조사·다른 프로젝트는 담지 않습니다. 테스트(`tests/test_intaeng.py`)가 그런 내용이 섞이면 실패합니다.
